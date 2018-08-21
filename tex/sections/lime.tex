@@ -1,0 +1,61 @@
+%-------------------------------------------------------------------------------
+\section{Local Interpretable Model-agnostic Explanations (LIME)}
+\begin{frame}[c]
+\Huge{\centerline{LIME}}
+\end{frame}
+%-------------------------------------------------------------------------------
+\begin{frame}
+	\cite{lime} defines LIME for some observation $\mathbf{x} \in \mathcal{X}$:
+
+	\begin{equation}
+	\begin{aligned}
+	\underset{h \in \mathcal{H}}{\arg\max}\:\mathcal{L}(g, h, \pi_{\mathbf{X}}) + \Omega(h)
+	\end{aligned}
+	\end{equation}
+
+	Here $g$ is the function to be explained, $h$ is an interpretable surrogate model of $g$, often a linear model $h_{GLM}$, $\pi_{\mathbf{X}}$ is a weighting function over the domain of $g$, and $\Omega(h)$ limits the complexity of $h$.
+
+	\vspace{5pt}
+
+	Typically, $h_{GLM}$ is constructed such that
+
+	\begin{equation}
+	\begin{aligned}
+	\mathbf{X}^{(*)}, g({X}^{(*)}) \xrightarrow{\mathcal{A}_{\text{surrogate}}} h_{\text{GLM}}
+	\end{aligned}
+	\end{equation}
+
+	where $\mathbf{X}^{(*)}$ is a generated sample, $\pi_{\mathbf{X}}$ weighs $\mathbf{X}^{(*)}$ samples by their Euclidean similarity to $\mathbf{x}$, local feature importance is estimated using $\beta_j x_j$, and $L_1$ regularization is used to induce a simplified, sparse $h_{GLM}$. 
+\end{frame}		
+
+\begin{frame}\frametitle{LIME (Cont.)}
+	\begin{itemize}
+		
+		\item LIME is ideal for creating highly interpretable explanations for non-decision tree models and for neural network models trained on unstructured data, e.g. deep learning models.
+		
+		\item Use regression fit measures to assess the trustworthiness of LIME explanations.
+		
+		\item Local feature importance values are offsets from a local intercept.
+		
+		\begin{itemize}
+			
+			\item Note that the intercept in LIME can account for the most important local phenomena.
+			
+			\item Generated LIME samples can contain large proportions of out-of-range data that can lead to unrealistic intercept values. 
+			
+		\end{itemize}
+		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{LIME (Cont.)}
+	\begin{itemize}
+		
+		\item To increase the trustworthiness of LIME explanations, try LIME on discretized input features and on manually constructed interactions.
+		
+		\item Use cross-validation to construct standard deviations or even confidence intervals for local feature importance values.
+		
+		\item LIME can fail, particularly in the presence of extreme nonlinearity or high-degree interactions.
+		
+	\end{itemize}
+\end{frame}
