@@ -1,0 +1,126 @@
+\section{Feature Importance}
+
+\begin{frame}[c]
+\Huge{\centerline{Feature Importance}}
+\end{frame}
+
+
+%----------------------------------------------------------------------------------------
+\begin{frame}\frametitle{Feature Importance}
+
+	\begin{itemize}			
+		\item Feature Importance ($FI$) measures the effect that a feature has on the predictions of a model.  
+		\item Unlike regression parameters, it is often unsigned and typically not directly related to the numerical predictions of the model.
+	\end{itemize}
+\end{frame}
+%----------------------------------------------------------------------------------------
+
+\begin{frame}\frametitle{Feature Importance}
+	\begin{itemize}			
+		\item \textbf{Global Importance}
+			\begin{itemize} 
+				\item measures the overall impact of an input feature on a model's predictions while taking nonlinearity and interactions into consideration.
+				\item values give an indication of the magnitude of a feature's contribution to model predictions for all observations.		
+			\end{itemize}
+			\bigskip
+		\item \textbf{Local Importance}
+			\begin{itemize} 
+				\item describes how the combination of the learned model rules or parameters and an individual observation's attributes affect a model's prediction for that observation while taking nonlinearity and interactions into effect. 
+	\end{itemize}	
+	\end{itemize}
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+
+\begin{frame}\frametitle{Random Forest Feature Importance }
+To get the Global Feature Importance of a model on the original features, train a random forest model $h_{\text{RF}}$ with some target outcome.
+		\begin{equation}
+                            \begin{aligned}\label{eq:rf}
+                            h_{\text{RF}}(\mathbf{x}^{(i)}) &= \frac{1}{B}\sum_{b=1}^B h_{\text{tree},b}\left(\mathbf{x}^{(i)}; \Theta_b\right)
+                            \end{aligned}
+		\end{equation}
+		$B:$ number of decision trees \newline
+		 $\Theta_b:$ set of splitting rules for each tree $h_{\text{tree},b}$  \newline
+\end{frame}
+%----------------------------------------------------------------------------------------
+
+
+\begin{frame}\frametitle{Random Forest Feature Importance (cont.)}         
+	\begin{itemize}
+	\item At each split in each tree $h_{\text{tree},b}$, the improvement in the split-criterion is the importance measure attributed to the splitting feature, $X_{j}$. Specifically, the improvement is the difference between the squared error, $SE$, of the parent node $pn$ and the child nodes $cn$ at a given split. The importance measure is accumulated over all trees separately for each feature.
+		\end{itemize}
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+
+\begin{frame}\frametitle{Random Forest Feature Importance (cont.)}         
+	\begin{itemize}
+	\item H2O splits a node to reduce the response variance in that node. 
+	\item Then $SE$ is calculated by assuming an unbiased estimator (i.e. the mean squared error $MSE$ is equal to the variance $VAR$). Given that $SE=MSE\times{N}$, Then $SE=MSE\times{N}=VAR\times{N}$.
+		\end{itemize}
+		\begin{equation}
+		 \begin{aligned}\label{eq:rf1}
+                           VAR&=\frac{1}{N}\sum_{i=0}^{N-1}(y^{(i)}-\bar{y})^2\\
+                           VAR\times{N}&=\left[\frac{1}{N}\times  \sum_{i=0}^{N-1}(y^{(i)})^2 -N\times{(\bar{y})^2} \right] \times N\\
+                           &= \left[ \sum_{i=0}^{N-1}(\frac{(y^{(i)})^2}{N}) - \bar{y}^2 \right ]\times N=SE\\        
+                 \end{aligned}
+		\end{equation}     
+\end{frame}
+
+
+%----------------------------------------------------------------------------------------
+%\begin{frame}\frametitle{Random Forest Feature Importance (cont.)}         
+%A more generic form for calculating the $SE$ is also given below:
+%
+%		 \begin{equation}
+%           	 \begin{aligned}
+%				&SE_n=\sum_{i=1}^{N_{n}}w_i(y_i - \bar{y}_{n})^2\\
+%				&\bar{y}_{n}=\frac{1}{N_{n}}\sum_{i=1}^{N_{n}}w_i y_i\\
+%           	 \end{aligned}
+%           	 \end{equation}
+%        $SE_n$: the squared error for a given node.\\
+%        $N_n$: the number of row-observations for a given node.\\
+%	$n$: the index of each node. \\
+%	$\bar{y}_n$: average predicted value for a given node.\\
+%\end{frame}
+%
+
+%----------------------------------------------------------------------------------------
+
+
+\begin{frame}\frametitle{Random Forest Feature Importance (cont.)}         
+	\begin{itemize}
+	\item at each split in each tree $h_{\text{tree},b}$, the improvement in the split-criterion is the importance measure attributed to the splitting feature, $X_{j}$. Specifically, the improvement is the difference between the squared error, $SE$, of the parent node $pn$ and the child nodes $cn$ at a given split. The importance measure is accumulated over all trees separately for each feature.
+	\end{itemize}
+		 \begin{equation}
+		 \begin{aligned}\label{eq:rf1}
+                            FI(X_{j})= \sum_{b=1}^B \sum_{tl=1}^{TD_{b}} \kappa \times SE_{tl}\\
+                            \text{where } \kappa=\kappa(X_{j,tl})=\begin{cases}
+                            1 & \text{if $X_{j,tl}=X_{j}$}\\
+                            0 & \text{otherwise}
+                            \end{cases}\\
+                            SE_{tl}=SE_{pn}-SE_{cn}\\
+                 \end{aligned}
+		\end{equation}
+		\bigskip
+
+\hspace{3cm}$SE_{tl}$: Squared Error at tree level $tl$ \\
+\hspace{3cm}$TD_{b}$: Max tree depth of each $b$ \\		
+\hspace{3cm}$tl$: tree level \\
+                         
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+
+\begin{frame}\frametitle{Random Forest Feature Importance }
+	\begin{itemize}
+		\item The aggregated feature importance values are then scaled between 0 and 1, such that the most important feature has an importance value of 1. \newline
+		
+		Let $m=\max\limits_{0 \leq l \leq P-1}FI(X_{l})$, $l=\text{index of feature } X_{l}$,\\
+		then
+	\begin{equation}
+                          AF(X_{j}) = \frac{FI(X_{j})}{m}
+	\end{equation}
+	Where $AF(X_{j})$ is the aggregated feature importance.
+	\end{itemize}
+\end{frame}
