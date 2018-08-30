@@ -5,6 +5,8 @@ bibtex interpretable_ml
 latex interpretable_ml.tex
 latex interpretable_ml.tex
 pdflatex interpretable_ml.tex
+rm interpretable_ml.pdf
+pdflatex interpretable_ml.tex
 mv interpretable_ml.pdf ../
 rm sections/*.aux
 rm ../tex/*.aux
