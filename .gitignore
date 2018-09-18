@@ -1,3 +1,7 @@
+#Python
+notebooks/credit/.ipynb_checkpoints/
+notebooks/env/
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
