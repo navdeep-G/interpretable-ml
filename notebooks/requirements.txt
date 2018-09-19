@@ -3,3 +3,4 @@ pandas==0.22.0
 matplotlib==2.2.2
 xgboost==0.80.0
 xlrd==1.1.0
+shap==0.24.0
