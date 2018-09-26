@@ -2,6 +2,9 @@
 notebooks/credit/.ipynb_checkpoints/
 notebooks/env/
 
+#R
+.Rhistory
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
