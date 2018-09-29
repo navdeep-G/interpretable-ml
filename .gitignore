@@ -4,6 +4,7 @@ notebooks/credit/.ipynb_checkpoints/
 notebooks/env/
 notebooks/simulated/__pycache__/
 notebooks/__pycache__/
+notebooks/simulated/multinomial/.ipynb_checkpoints/
 
 #R
 .Rhistory
