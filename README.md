@@ -1,8 +1,8 @@
 # Interpretable Machine Learning
 
-### A collection of notebooks, resources, and code in relation to interpretable machine learning.
+##### **A collection of code, notebooks, and resources in relation to interpretable machine learning.**
 
-**Want to contribute your own examples/code?** Just make a pull request.
+##### **Want to contribute your own examples/code?** Just make a pull request.
 
 ### Setup
 ```
