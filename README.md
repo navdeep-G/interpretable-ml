@@ -12,6 +12,7 @@ source env/bin/activate
 pip install -r notebooks/requirements.txt
 ```
 ### Contents 
+* [An overview of interpretable ML techniques](https://github.com/navdeep-G/interpretable-ml/tree/master/interpretable_ml.pdf)
 * [Binomial Example (creditcard dataset)](https://github.com/navdeep-G/interpretable-ml/tree/master/notebooks/credit/binomial)
 * [Multinomial Example (creditcard dataset)](https://github.com/navdeep-G/interpretable-ml/tree/master/notebooks/credit/multinomial)
 * [Multinomial Example (simulated dataset)](https://github.com/navdeep-G/interpretable-ml/tree/master/notebooks/simulated/multinomial)
