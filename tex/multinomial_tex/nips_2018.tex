@@ -2,15 +2,20 @@
 
 % if you need to pass options to natbib, use, e.g.:
 % \PassOptionsToPackage{numbers, compress}{natbib}
-% before loading nips_2017
-%
-% to avoid loading the natbib package, add option nonatbib:
-% \usepackage[nonatbib]{nips_2017}
+% before loading nips_2018
 
-\usepackage{nips_2017}
+% ready for submission
+\usepackage{nips_2018}
+
+% to compile a preprint version, e.g., for submission to arXiv, add
+% add the [preprint] option:
+% \usepackage[preprint]{nips_2018}
 
 % to compile a camera-ready version, add the [final] option, e.g.:
-% \usepackage[final]{nips_2017}
+% \usepackage[final]{nips_2018}
+
+% to avoid loading the natbib package, add option nonatbib:
+% \usepackage[nonatbib]{nips_2018}
 
 \usepackage[utf8]{inputenc} % allow utf-8 input
 \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
@@ -21,7 +26,7 @@
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
 
-\title{Formatting instructions for NIPS 2017}
+\title{Formatting instructions for NIPS 2018}
 
 % The \author macro works with any number of authors. There are two
 % commands used to separate the names and addresses of multiple
@@ -78,27 +83,27 @@
   one paragraph.
 \end{abstract}
 
-\section{Submission of papers to NIPS 2017}
+\section{Submission of papers to NIPS 2018}
 
 NIPS requires electronic submissions.  The electronic submission site
 is
 \begin{center}
-  \url{https://cmt.research.microsoft.com/NIPS2017/}
+  \url{https://cmt.research.microsoft.com/NIPS2018/}
 \end{center}
 
-Please read carefully the instructions below and follow them
-faithfully.
+Please read the instructions below carefully and follow them faithfully.
 
 \subsection{Style}
 
-Papers to be submitted to NIPS 2017 must be prepared according to the
+Papers to be submitted to NIPS 2018 must be prepared according to the
 instructions presented here. Papers may only be up to eight pages
-long, including figures. This does not include acknowledgments and 
-cited references which are allowed on subsequent pages.
-Papers that exceed these limits will not be reviewed, or in any
-other way considered for presentation at the conference.
+long, including figures. Additional pages \emph{containing only
+  acknowledgments and/or cited references} are allowed. Papers that
+exceed eight pages of content (ignoring references) will not be
+reviewed, or in any other way considered for presentation at the
+conference.
 
-The margins in 2017 are the same as since 2007, which allow for
+The margins in 2018 are the same as since 2007, which allow for
 $\sim$$15\%$ more words in the paper compared to earlier years.
 
 Authors are required to use the NIPS \LaTeX{} style files obtainable
@@ -113,25 +118,34 @@ available on the World Wide Web at
 \begin{center}
   \url{http://www.nips.cc/}
 \end{center}
-The file \verb+nips_2017.pdf+ contains these instructions and
+The file \verb+nips_2018.pdf+ contains these instructions and
 illustrates the various formatting requirements your NIPS paper must
 satisfy.
 
-The only supported style file for NIPS 2017 is \verb+nips_2017.sty+,
+The only supported style file for NIPS 2018 is \verb+nips_2018.sty+,
 rewritten for \LaTeXe{}.  \textbf{Previous style files for \LaTeX{}
   2.09, Microsoft Word, and RTF are no longer supported!}
 
-The new \LaTeX{} style file contains two optional arguments:
-\verb+final+, which creates a camera-ready copy, and \verb+nonatbib+,
-which will not load the \verb+natbib+ package for you in case of
-package clash.
+The \LaTeX{} style file contains three optional arguments: \verb+final+,
+which creates a camera-ready copy, \verb+preprint+, which creates a
+preprint for submission to, e.g., arXiv, and \verb+nonatbib+, which will
+not load the \verb+natbib+ package for you in case of package clash.
 
-At submission time, please omit the \verb+final+ option. This will
-anonymize your submission and add line numbers to aid review.  Please
-do \emph{not} refer to these line numbers in your paper as they will
-be removed during generation of camera-ready copies.
+\paragraph{New preprint option for 2018}
+If you wish to post a preprint of your work online, e.g., on arXiv,
+using the NIPS style, please use the \verb+preprint+ option. This will
+create a nonanonymized version of your work with the text
+``Preprint. Work in progress.''  in the footer. This version may be
+distributed as you see fit. Please \textbf{do not} use the
+\verb+final+ option, which should \textbf{only} be used for papers
+accepted to NIPS.
 
-The file \verb+nips_2017.tex+ may be used as a ``shell'' for writing
+At submission time, please omit the \verb+final+ and \verb+preprint+
+options. This will anonymize your submission and add line numbers to aid
+review. Please do \emph{not} refer to these line numbers in your paper
+as they will be removed during generation of camera-ready copies.
+
+The file \verb+nips_2018.tex+ may be used as a ``shell'' for writing
 your paper. All you have to do is replace the author, title, abstract,
 and text of the paper with your own.
 
@@ -213,7 +227,7 @@ produces
 \end{quote}
 
 If you wish to load the \verb+natbib+ package with options, you may
-add the following before loading the \verb+nips_2017+ package:
+add the following before loading the \verb+nips_2018+ package:
 \begin{verbatim}
    \PassOptionsToPackage{options}{natbib}
 \end{verbatim}
@@ -221,7 +235,7 @@ add the following before loading the \verb+nips_2017+ package:
 If \verb+natbib+ clashes with another package you load, you can add
 the optional argument \verb+nonatbib+ when loading the style file:
 \begin{verbatim}
-   \usepackage[nonatbib]{nips_2017}
+   \usepackage[nonatbib]{nips_2018}
 \end{verbatim}
 
 As submission is double blind, refer to your own published work in the
@@ -244,6 +258,12 @@ marks.\footnote{As in this example.}
 
 \subsection{Figures}
 
+\begin{figure}
+  \centering
+  \fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
+  \caption{Sample figure caption.}
+\end{figure}
+
 All artwork must be neat, clean, and legible. Lines should be dark
 enough for purposes of reproduction. The figure number and caption
 always appear after the figure. Place one line space before the figure
@@ -254,11 +274,6 @@ numbered consecutively.
 You may use color figures.  However, it is best for the figure
 captions and the paper body to be legible if the paper is printed in
 either black/white or in color.
-\begin{figure}[h]
-  \centering
-  \fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
-  \caption{Sample figure caption.}
-\end{figure}
 
 \subsection{Tables}
 
@@ -279,14 +294,14 @@ which allows for typesetting high-quality, professional tables:
 \end{center}
 This package was used to typeset Table~\ref{sample-table}.
 
-\begin{table}[t]
+\begin{table}
   \caption{Sample table title}
   \label{sample-table}
   \centering
   \begin{tabular}{lll}
     \toprule
     \multicolumn{2}{c}{Part}                   \\
-    \cmidrule{1-2}
+    \cmidrule(r){1-2}
     Name     & Description     & Size ($\mu$m) \\
     \midrule
     Dendrite & Input terminal  & $\sim$100     \\
@@ -381,8 +396,8 @@ References follow the acknowledgments. Use unnumbered first-level
 heading for the references. Any choice of citation style is acceptable
 as long as you are consistent. It is permissible to reduce the font
 size to \verb+small+ (9 point) when listing the references. {\bf
-  Remember that you can go over 8 pages as long as the subsequent ones contain
-  \emph{only} cited references.}
+  Remember that you can use more than eight pages as long as the
+  additional pages contain \emph{only} cited references.}
 \medskip
 
 \small
