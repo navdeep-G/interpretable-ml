@@ -26,7 +26,11 @@ dt_surrogate_caret <- function(data_path, ignore_cols, target, plot_title, outpu
   
   
   # Display the results of the cross validation run
+  cat("Model Summary")
   print(rpart.cv)
+  
+  cat("\nAccuracy and Kappa Across CV Folds")
+  print(rpart.cv$resample)
   
   # What is the standard deviation?
   cat(paste("\nCross validation standard deviation:",  
