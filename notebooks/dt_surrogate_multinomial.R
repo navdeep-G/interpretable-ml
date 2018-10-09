@@ -54,14 +54,14 @@ dt_surrogate <- function(data_path, ignore_cols, target, plot_title, output_file
   ggplot_confusion_matrix(cfm)
   
   #Export tree image
-  png(paste0("./images/", output_file_name), width = 800, height = 600)
+  png(paste0(output_file_name), width = 800, height = 600)
   rpart.plot(tree_data, main = plot_title)
   dev.off()
   
 }
 
-ignore_cols=c("target", "prob_target_class0", "prob_target_class1", "prob_target_class2" )
-dt_surrogate("./output/simulated_mult_preds.csv", ignore_cols, "pred_target", "Simulated Data Decision Tree Surrogate", "dt_surrogate_simulated.png")
+ignore_cols=c("target", "prob_target_class0", "prob_target_class1", "prob_target_class2")
+dt_surrogate("simulated/multinomial/output/simulated_mult_preds.csv", ignore_cols, "pred_target", "Simulated Data Decision Tree Surrogate", "simulated/multinomial/images/dt_surrogate_simulated.png")
 ignore_cols=c("PAY_0","prob_PAY_0_class0", "prob_PAY_0_class1", "prob_PAY_0_class2", "prob_PAY_0_class3", "prob_PAY_0_class4", "prob_PAY_0_class5", "prob_PAY_0_class6", "prob_PAY_0_class7"
 ,"prob_PAY_0_class8" )
-dt_surrogate("./output/credit_mult_preds.csv", ignore_cols, "pred_PAY_0", "Credit Card Data Decision Tree Surrogate", "dt_surrogate_credit.png")
+dt_surrogate("credit/multinomial/output/credit_mult_preds.csv", ignore_cols, "pred_PAY_0", "Credit Card Data Decision Tree Surrogate", "credit/multinomial/images/dt_surrogate_credit.png")
