@@ -12,7 +12,9 @@ dt_surrogate_caret <- function(data_path, ignore_cols, target, plot_title, outpu
   # Set up caret to perform 5-fold cross validation
   caret.control <- trainControl(method = "repeatedcv",
                                 number = 5,
-                                repeats = 1)
+                                repeats = 1,
+                                classProbs=TRUE,
+                                summaryFunction=mnLogLoss)
   
   
   # Use caret to train the rpart decision tree using 5-fold cross 
@@ -21,15 +23,16 @@ dt_surrogate_caret <- function(data_path, ignore_cols, target, plot_title, outpu
   rpart.cv <- train(as.formula(paste0(target, "~ .")), 
                     data = data_train,
                     method = "rpart",
+                    metric="logLoss",
                     trControl = caret.control,
                     tuneLength = 15)
   
   
-  # Display the results of the cross validation run
+  # Display the results of the cross validatison run
   cat("Model Summary")
   print(rpart.cv)
   
-  cat("\nAccuracy and Kappa Across CV Folds")
+  cat("\nLogloss Across CV Folds\n")
   print(rpart.cv$resample)
   
   # What is the standard deviation?
