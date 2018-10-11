@@ -52,7 +52,7 @@ dt_surrogate_caret <- function(data_path, ignore_cols, target, plot_title, outpu
 }
 
 ignore_cols=c("target", "prob_target_class0", "prob_target_class1", "prob_target_class2")
-dt_surrogate_caret("simulated/multinomial/output/simulated_mult_preds.csv", ignore_cols, "pred_target", "Simulated Data Decision Tree Surrogate", "simulated/multinomial/images/dt_surrogate_caret_simulated.png")
+dt_surrogate_caret("../simulated/multinomial/output/simulated_mult_preds.csv", ignore_cols, "pred_target", "Simulated Data Decision Tree Surrogate", "../simulated/multinomial/images/dt_surrogate_caret_simulated.png")
 ignore_cols=c("PAY_0","prob_PAY_0_class0", "prob_PAY_0_class1", "prob_PAY_0_class2", "prob_PAY_0_class3", "prob_PAY_0_class4", "prob_PAY_0_class5", "prob_PAY_0_class6", "prob_PAY_0_class7"
               ,"prob_PAY_0_class8" )
-dt_surrogate_caret("credit/multinomial/output/credit_mult_preds.csv", ignore_cols, "pred_PAY_0", "Credit Card Data Decision Tree Surrogate", "credit/multinomial/images/dt_surrogate_caret_credit.png")
+dt_surrogate_caret("../credit/multinomial/output/credit_mult_preds.csv", ignore_cols, "pred_PAY_0", "Credit Card Data Decision Tree Surrogate", "../credit/multinomial/images/dt_surrogate_caret_credit.png")
