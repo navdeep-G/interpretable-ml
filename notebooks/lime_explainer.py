@@ -7,8 +7,9 @@ import xgboost as xgb
 class LIMEExplainer(object):
 
     """ Basic framework for building Local, Interpretable, Model-agnostic
-    Explanations (LIMEs) for XGBoost models. Supports regression and binomial
-    classification. Requires h2o, numpy, pandas, and xgboost packages.
+        Explanations (LIMEs) for XGBoost models. Supports regression, binomial,
+        and multinomial classification.
+        
         :ivar training_frame: Pandas DataFrame containing the row to be explained,
                               mandatory.
         :ivar X: List of XGBoost model inputs. Inputs must be numeric, mandatory.
@@ -34,12 +35,13 @@ class LIMEExplainer(object):
                          interest.
         :ivar lime: Trained local linear model, H2OGeneralizedLinearEstimator.
         :ivar bins_dict: Dictionary of bins used to discretize the LIME sample.
+        :ivar multinomial: Whether the model is a multinomial model
     Reference: https://arxiv.org/abs/1602.04938
     """
 
     def __init__(self, training_frame=None, X=None, model=None,
                  N=None, discretize=None, quantiles=None, seed=None,
-                 print_=None, top_n=None, intercept=None):
+                 print_=None, top_n=None, intercept=None, multinomial=False):
 
         # mandatory
 
@@ -107,6 +109,8 @@ class LIMEExplainer(object):
 
         self.bins_dict = {}
 
+        self.multinomial = multinomial
+
         h2o.no_progress() # do not show h2o progress bars
 
     def _generate_local_sample(self, row):
@@ -143,17 +147,23 @@ class LIMEExplainer(object):
         """
 
         dlocal_sample = xgb.DMatrix(local_sample)
-        scored_local_sample = pd.DataFrame(self.model.predict(dlocal_sample)).max(axis=1) #For multinomial -> .max(axis=1))
+        if not self.multinomial:
+            scored_local_sample = pd.DataFrame(self.model.predict(dlocal_sample))
+        else:
+            scored_local_sample = pd.DataFrame(self.model.predict(dlocal_sample)).max(axis=1) #For multinomial -> .max(axis=1))
         scored_local_sample = scored_local_sample.to_frame()
         scored_local_sample.columns = ['predict']
 
-        pred_row = row.to_frame().T
-        print("Row:\n")
-        print(pred_row)
-        print("\n")
-        print("Multinomial Model Prediction:\n")
-        print(pd.DataFrame(self.model.predict(xgb.DMatrix(pred_row))))
-        print("\n")
+        if not self.multinomial:
+            print('\nModel Prediction: %.2f' % self.model.predict(xgb.DMatrix(pd.DataFrame(pd.to_numeric(row)).T))[0])
+        else:
+            pred_row = row.to_frame().T
+            print("Row:\n")
+            print(pred_row)
+            print("\n")
+            print("Multinomial Model Prediction:\n")
+            print(pd.DataFrame(self.model.predict(xgb.DMatrix(pred_row))))
+            print("\n")
 
         return pd.concat([local_sample, scored_local_sample], axis=1)
 
