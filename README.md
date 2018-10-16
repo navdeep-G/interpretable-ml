@@ -10,6 +10,11 @@ cd interpretable-ml
 virtualenv -p python3.6 env
 source env/bin/activate
 pip install -r notebooks/requirements.txt
+
+** Note: if using ubuntu, you may have to manually install gcc. Try the following 
+1. sudo apt-get update
+2. sudo apt-get install gcc
+3. sudo apt-get install --reinstall build-essential
 ```
 ### Contents 
 * An overview of interpretable ML techniques can be found [here](https://github.com/navdeep-G/interpretable-ml/tree/master/interpretable_ml.pdf)
