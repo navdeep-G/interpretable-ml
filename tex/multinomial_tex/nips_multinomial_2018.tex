@@ -65,7 +65,39 @@
 
 \section{Introduction}
 
-\section{Notation}
+%-------------------------------------------------------------------------------
+\section{Notation} \label{sec:notation}
+%-------------------------------------------------------------------------------
+
+To facilitate technical descriptions of explanatory techniques, notation for input and output spaces, datasets, and models is defined.
+
+\subsection{Spaces} 
+ 
+	\begin{itemize}
+		\item Input features come from the set $\mathcal{X}$ contained in a \textit{P}-dimensional input space,\\ $\mathcal{X} \subset \mathbb{R}^P$.  
+		\item Known labels corresponding to instances of $\mathcal{X}$ come from the set $\mathcal{Y}$.
+		\item Learned output responses come from the set $\mathcal{\hat{Y}}$. % For regression models, the set $\mathcal{\hat{Y}}_r$ is also contained in a $C$-dimensional output space, $\mathcal{\hat{Y}}_r \subset \mathbb{R}^{C_r}$. For classification models, the set $\mathcal{\hat{Y}}_c$ typically contains a column vector for each unique class in $\mathcal{Y}$. Hence, $\mathcal{\hat{Y}}_c$ is contained in a $C'$-dimensional output space,  $\mathcal{\hat{Y}}_c \subset \mathbb{R}^{C'_c}$. 
+		\item The output responses come from a set $\mathcal{Y}$ contained in a $C$-dimensional output space (i.e. $\mathcal{Y} \subset \mathbb{R}^C$).
+	\end{itemize}	
+	
+	\subsection{Datasets} 
+
+	\begin{itemize}
+		\item The input dataset $\mathbf{X}$ is composed of observed instances of the set $\mathcal{X}$ with a corresponding dataset of labels $\mathbf{Y}$, observed instances of the set $\mathcal{Y}$.
+		\item Each $i$-th observation of $\mathbf{X}$ is denoted as $\mathbf{x}^{(i)} = $  
+		$[x_0^{(i)}, x_1^{(i)}, \dots, x_{\textit{P}-1}^{(i)}]$, with corresponding $i$-th labels in $\mathbf{Y}, \mathbf{y}^{(i)}$, and corresponding predictions in $\mathbf{\hat{Y}}, \mathbf{\hat{y}}^{(i)}$. % = [y_0^{(i)}, y_1^{(i)}, \dots, y_{\textit{C}-1}^{(i)}]$.
+		\item $\mathbf{X}$ and $\mathbf{Y}$ consist of $N$ tuples of observations: $[(\mathbf{x}^{(0)},\mathbf{y}^{(0)}), (\mathbf{x}^{(1)},\mathbf{y}^{(1)}), \dots,$\\$(\mathbf{x}^{(N-1)},\mathbf{y}^{(N-1)})]$. %\\ $\mathbf{x}^{(i)} \in \mathcal{X}$, $\mathbf{y}^{(i)} \in \mathcal{Y}$.
+		\item Each $j$-th input column vector of $\mathbf{X}$ is denoted as $X_j = [x_{j}^{(0)}, x_{j}^{(1)}, \dots, x_{j}^{(N-1)}]^T$.
+	\end{itemize}	
+	
+	\subsection{Models}
+
+	\begin{itemize}
+		\item A type of machine learning model $g$, selected from a hypothesis set $\mathcal{H}$, is trained to represent an unknown signal-generating function $f$ observed as  $\mathbf{X}$ with labels $\mathbf{Y}$ using a training algorithm $\mathcal{A}$: 
+		%\\ $\mathbf{X}, \mathbf{Y} \xrightarrow{\mathcal{A}} g$.
+		\item $g$ generates learned output responses on the input dataset $g(\mathbf{X}) = \mathbf{\hat{Y}}$, and on the general input space $g(\mathcal{X}) = \mathcal{\hat{Y}}$.
+		\item The model to be explained is denoted as $g$.
+	\end{itemize}
 
 \section{Simulated Data Experiments}
 
