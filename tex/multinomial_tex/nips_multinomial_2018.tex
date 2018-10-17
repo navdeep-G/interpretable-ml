@@ -65,6 +65,20 @@
 
 \section{Introduction}
 
+Interpretability of complex machine learning models is a multifaceted, complex, and still evolving subject. Others have defined key terms and put forward general motivations for better interpretability of machine learning models (and advocated for stronger scientific rigor in certain cases) \cite{been_kim1}, \cite{gilpin2018explaining}, \cite{guidotti2018survey}, \cite{lipton1}. This applied text side-steps some looming, unsettled intellectual matters to present viable practical methods for explaining the mechanisms and outputs of predictive models. In particular, this text will focus on multinomial classifiers as these type of classifiers have been absent across the machine learning interpretability literature. 
+
+Following Doshi-Velez and Kim, this discussion uses ``the ability to explain or to present in understandable terms to a human,'' as the definition of \textit{interpretable}. ``When you can no longer keep asking why,'' will serve as the working definition for a \textit{good explanation} of model mechanisms or predictions \cite{gilpin2018explaining}.
+  
+The presented explanatory methods should help practitioners make random forests, GBMs, and other types of popular supervised machine learning models more interpretable by enabling post-hoc explanations that are suitable for:\\
+
+\begin{itemize}
+	\item Facilitating regulatory compliance.
+	\item Understanding or debugging model mechanisms and predictions.
+	\item Preventing or debugging accidental or intentional discrimination by models.
+	\item Preventing or debugging the malicious hacking or adversarial attack of models.
+\end{itemize}
+
+Detailed discussions of the explanatory methods begin below by defining notation.
 %-------------------------------------------------------------------------------
 \section{Notation} \label{sec:notation}
 %-------------------------------------------------------------------------------
@@ -274,14 +288,12 @@ Note that \verb+amsfonts+ is automatically loaded by the
 
 \subsubsection*{Acknowledgments}
 
-Use unnumbered third level headings for the acknowledgments. All
-acknowledgments go at the end of the paper. Do not include
-acknowledgments in the anonymized submission, only in the final paper.
+The authors wishes to thank Sri Ambati, Arno Candel, Mark Chan, Doug Deloy, Lauren DiPerna, Mateusz Dymczyk, Megan and Michal Kurka, Lingyao Meng, Mattias M\"uller, Wen Phan and other makers past and present at H2O.ai who turned explainability into a software application and learned the lessons discussed in this text along with us.
 
 %-------------------------------------------------------------------------------
 %\section{References}
 %-------------------------------------------------------------------------------
 
 \bibliographystyle{plain}
-\bibliography{nips_multinomial_2018.tex}
+\bibliography{nips_multinomial_2018}
 \end{document}
