@@ -18,4 +18,4 @@ pip install -r notebooks/requirements.txt
   		* [Binomial (creditcard dataset) ](https://github.com/navdeep-G/interpretable-ml/tree/master/notebooks/credit/binomial)
   		* [Multinomial (creditcard dataset)](https://github.com/navdeep-G/interpretable-ml/tree/master/notebooks/credit/multinomial)
   	* Simulated Data:
-  		* [Multinomial (simulated dataset)](https://github.com/navdeep-G/interpretable-ml/tree/master/notebooks/simulated/multinomial)
+  		* [Multinomial](https://github.com/navdeep-G/interpretable-ml/tree/master/notebooks/simulated/multinomial)
