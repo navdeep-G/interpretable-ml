@@ -7,6 +7,8 @@ notebooks/__pycache__/
 notebooks/simulated/multinomial/.ipynb_checkpoints/
 notebooks/credit/multinomial/.ipynb_checkpoints/
 notebooks/credit/binomial/.ipynb_checkpoints/
+notebooks/simulated/binomial/.ipynb_checkpoints/
+*.idea/
 
 #R
 .Rhistory
