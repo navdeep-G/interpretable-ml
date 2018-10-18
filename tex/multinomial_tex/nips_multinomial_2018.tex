@@ -27,6 +27,7 @@
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
 \usepackage{graphicx}
+\usepackage{placeins}
 
 % For algorithms
 \usepackage{algorithm}
@@ -126,7 +127,7 @@ f = \text{num} _1 * \text{num}_4 + |\text{num}_8| * \text{num}_9^2 + e
 
 \noindent$g_{\text{GBM}}$ is trained: $ \mathbf{X}, \mathbf{f(X)} \xrightarrow{\mathcal{A}} g_{\text{GBM}}$ such that $g_{\text{GBM}} \approx f$. Then $h_{\text{tree}}$ is extracted by $\mathbf{X}, g_{\text{GBM}}(\mathbf{X}) \xrightarrow{\mathcal{A}} h_{\text{tree}}$, such that $h_{\text{tree}}(\mathbf{X}) \approx g_{\text{GBM}}(\mathbf{X}) \approx f(\mathbf{X})$.
 
-\subsection{Decision Tree Surrogate}
+\subsection{Decision Tree Surrogate} \label{sec:surrogate_dt}
 
 Given a learned function $g$, a set of learned output responses $g(\mathbf{X}) = \mathbf{\hat{Y}}$, and a tree splitting and pruning approach $\mathcal{A}$, a global -- or over all $\mathbf{X}$ -- surrogate decision tree $h_{\text{tree}}$ can be extracted such that $h_{\text{tree}}(\mathbf{X}) \approx g(\mathbf{X})$:
 
@@ -137,8 +138,8 @@ Given a learned function $g$, a set of learned output responses $g(\mathbf{X}) =
 \begin{figure}[htb]
 	\begin{center}
 		\includegraphics[height=200pt]{img/simple_tree_prepruned_simulated.png}
-		\label{fig:surrogate_dt}
 		\caption{}
+		\label{fig:surrogate_dt}
 	\end{center}
 \end{figure}
 
@@ -151,8 +152,8 @@ Elegantly handles high cardinality targets.
 \begin{figure}[htb]
 	\begin{center}
 		\includegraphics[height=120pt]{img/decision_boundary_simulated_num1_num4.png}
-		\label{fig:global_db}
 		\caption{}
+		\label{fig:global_db}
 	\end{center}
 \end{figure}
 
@@ -167,51 +168,7 @@ What to do if very high cardinality in response, $\mathbf{Y}$:
 
 \subsection{Shapley Global Feature Importance}
 
-\begin{figure}[htb]
-	\begin{center}
-		\includegraphics[height=110pt]{img/shap_sim_horizontal_annotated.png}
-		\label{fig:global_feature_imp}
-		\caption{}
-	\end{center}
-\end{figure}
-
-What to do if very high cardinality in response, $\mathbf{Y}$:
-
-\begin{itemize}
-
-\item Examine top-K most frequent classes
-\item Examine top-K most accurate and inaccurate classes
-\item Examine classes with highest variance in sum(absolute(shap))
-
-\end{itemize}
-
-\subsection{Partial Dependence and ICE}
-
-Partial dependence (PD) plots are a widely-used method for describing the average predictions of a complex model $g$ across some partition of data $\mathbf{X}$ for some interesting input feature $X_j$ \cite{esl}. Individual conditional expectation (ICE) plots are a newer method that describes the local behavior of $g$ for a single instance $\mathbf{x} \in \mathcal{X}$. Partial dependence and ICE can be combined in the same plot to identify interactions modeled by $g$ and to create a holistic portrait of the predictions of a complex model for some $X_j$  \cite{ice_plots}.
-
-\begin{figure}[htb]
-	\begin{center}
-		\includegraphics[height=175pt]{img/pdp_ice_sim_annotated.png}
-		\label{fig:global_pdp_ice}
-		\caption{}
-	\end{center}
-\end{figure}
-
-What to do if very high cardinality in response, $\mathbf{Y}$:
-
-\begin{itemize}
-
-\item Examine top-K most frequent classes
-\item Examine top-K most accurate and inaccurate classes
-\item Examine classes with highest variance in partial dependence
-\item Examine classes with largest differences between partial dependence and ICE
-
-\end{itemize}
-
-\subsection{Shapley Local Feature Importance}
-
 Shapley explanations, including tree shap and even certain implementations of LIME, are a class of additive, consistent local feature contribution measures with long-standing theoretical support \cite{shapley}. Shapley explanations are the only possible locally accurate and consistent feature contribution values, meaning that Shapley explanation values for input features always sum to $g(\mathbf{x})$ and that Shapley explanation values can never decrease for some $x_j$ when $g$ is changed such that $x_j$ truly makes a stronger contribution to $g(\mathbf{x})$ \cite{shapley}. 
-
 
 \begin{equation}
 \label{eq:shap_additive}
@@ -229,8 +186,59 @@ g(\mathbf{x}) = \phi_0 + \sum_{j=0}^{j=\mathcal{P} - 1} \phi_j \mathbf{z}_j
 
 Shapley values can be estimated in different ways. Tree shap is a specific implementation of Shapley explanations. It does not rely on surrogate models. Both tree shap and a related technique known as \textit{treeinterpreter} rely instead on traversing internal tree structures to estimate the impact of each $x_j$ for some $g(\mathbf{x})$ of interest \cite{tree_shap}, \cite{treeinterpreter}.
 
+\begin{figure}[!htbp]
+	\begin{center}
+		\includegraphics[height=108pt]{img/shap_sim_horizontal_annotated.png}
+		\caption{}
+		\label{fig:global_feature_imp}
+	\end{center}
+\end{figure}
+\FloatBarrier
+
+\subsubsection{Recommendations}
 
 What to do if very high cardinality in response, $\mathbf{Y}$:
+
+\begin{itemize}
+
+\item Examine top-K most frequent classes
+\item Examine top-K most accurate and inaccurate classes
+\item Examine classes with highest variance in sum(absolute(shap))
+
+\end{itemize}
+
+\subsection{Shapley Local Feature Importance}
+
+\subsection{Partial Dependence and ICE}
+
+Partial dependence (PD) plots are a widely-used method for describing the average predictions of a complex model $g$ across some partition of data $\mathbf{X}$ for some interesting input feature $X_j$ \cite{esl}. Individual conditional expectation (ICE) plots are a newer method that describes the local behavior of $g$ for a single instance $\mathbf{x} \in \mathcal{X}$. Partial dependence and ICE can be combined in the same plot to identify interactions modeled by $g$ and to create a holistic portrait of the predictions of a complex model for some $X_j$  \cite{ice_plots}.
+
+\subsubsection{Description}
+	
+Following Friedman et al. a single feature $X_j \in \mathbf{X}$ and its complement set $\mathbf{X}_{(-j)} \in \mathbf{X}$ (where $X_j \cup \mathbf{X}_{(-j)} = \mathbf{X}$) is considered. $\text{PD}(X_j, g)$ for a given feature $X_j$ is estimated as the average output for a particular class outcome, $C'$, of the learned function $g(\mathbf{X})$ when all the components of $X_j$ are set to a constant $x \in \mathcal{X}$ and $\mathbf{X}_{(-j)}$ is left unchanged. $\text{ICE}(x_j, \mathbf{x}, g)$ for a given instance $\mathbf{x}$ and feature $x_j$ is estimated as the output for a particular class outcome, $C'$, for $g(\mathbf{x})$ when $x_j$ is set to a constant $x \in \mathcal{X}$ and all other features $\mathbf{x} \in \mathbf{X}_{(-j)}$ are left untouched. Partial dependence and ICE curves are usually plotted over some set of constants $x \in \mathcal{X}$. 
+
+\begin{figure}[htb]
+	\begin{center}
+		\includegraphics[height=175pt]{img/pdp_ice_sim_annotated.png}
+    \caption{Partial dependence and ICE curves for previously defined known signal-generating function $f$,  learned GBM response function $g_{\text{GBM}}$, and important input feature $\text{num}_9$.}
+    \label{fig:global_pdp_ice}
+	\end{center}
+\end{figure}
+
+As in Section \ref{sec:surrogate_dt}, simulated data is used to highlight desirable characteristics of partial dependence and ICE plots. In Figure \ref{fig:global_pdp_ice} partial dependence and ICE at the minimum, maximum, and each decile of $g_{\text{GBM}}(\mathbf{X})$ are plotted.
+
+\subsubsection{Recommendations}
+
+What to do if very high cardinality in response, $\mathbf{Y}$:
+
+\begin{itemize}
+
+\item Examine top-K most frequent classes
+\item Examine top-K most accurate and inaccurate classes
+\item Examine classes with highest variance in partial dependence
+\item Examine classes with largest differences between partial dependence and ICE
+
+\end{itemize}
 
 \section{Supplementary Materials}
 
