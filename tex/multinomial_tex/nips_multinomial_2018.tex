@@ -116,6 +116,16 @@ To facilitate technical descriptions of explanatory techniques, notation for inp
 
 \section{Global Analysis}
 
+\subsection{Data}
+Subsequent sections will use simulated data that empirically demonstrates the desired relationships between input feature importance and interactions in the input space $\mathbf{X}$, the label space $f(\mathbf{X}) = \mathbf{Y}$, a GBM model to be explained $g_{\text{GBM}}$, and a decision tree surrogate $h_{\text{tree}}$. Data with a known signal-generating function depending on four input features with interactions and with eight noise features is simulated such that: 
+
+\begin{equation}
+\label{eq:f}
+f = \text{num} _1 * \text{num}_4 + |\text{num}_8| * \text{num}_9^2 + e
+\end{equation}
+
+\noindent$g_{\text{GBM}}$ is trained: $ \mathbf{X}, \mathbf{f(X)} \xrightarrow{\mathcal{A}} g_{\text{GBM}}$ such that $g_{\text{GBM}} \approx f$. Then $h_{\text{tree}}$ is extracted by $\mathbf{X}, g_{\text{GBM}}(\mathbf{X}) \xrightarrow{\mathcal{A}} h_{\text{tree}}$, such that $h_{\text{tree}}(\mathbf{X}) \approx g_{\text{GBM}}(\mathbf{X}) \approx f(\mathbf{X})$.
+
 \subsection{Decision Tree Surrogate}
 
 Given a learned function $g$, a set of learned output responses $g(\mathbf{X}) = \mathbf{\hat{Y}}$, and a tree splitting and pruning approach $\mathcal{A}$, a global -- or over all $\mathbf{X}$ -- surrogate decision tree $h_{\text{tree}}$ can be extracted such that $h_{\text{tree}}(\mathbf{X}) \approx g(\mathbf{X})$:
@@ -179,7 +189,6 @@ What to do if very high cardinality in response, $\mathbf{Y}$:
 
 Partial dependence (PD) plots are a widely-used method for describing the average predictions of a complex model $g$ across some partition of data $\mathbf{X}$ for some interesting input feature $X_j$ \cite{esl}. Individual conditional expectation (ICE) plots are a newer method that describes the local behavior of $g$ for a single instance $\mathbf{x} \in \mathcal{X}$. Partial dependence and ICE can be combined in the same plot to identify interactions modeled by $g$ and to create a holistic portrait of the predictions of a complex model for some $X_j$  \cite{ice_plots}.
 
-
 \begin{figure}[htb]
 	\begin{center}
 		\includegraphics[height=175pt]{img/pdp_ice_sim_annotated.png}
@@ -187,7 +196,6 @@ Partial dependence (PD) plots are a widely-used method for describing the averag
 		\caption{}
 	\end{center}
 \end{figure}
-
 
 What to do if very high cardinality in response, $\mathbf{Y}$:
 
