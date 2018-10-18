@@ -188,8 +188,8 @@ Shapley values can be estimated in different ways. Tree shap is a specific imple
 
 \begin{figure}[!htbp]
 	\begin{center}
-		\includegraphics[height=108pt]{img/shap_sim_horizontal_annotated.png}
-		\caption{}
+		\includegraphics[height=103pt]{img/shap_sim_horizontal_annotated.png}
+		\caption{Shapley summary plot for known signal-generating function $f = \text{num} _1 * \text{num}_4 + |\text{num}_8| * \text{num}_9^2 + e$, and for learned GBM response function $g_{\text{GBM}}$ per response outcome.}
 		\label{fig:global_feature_imp}
 	\end{center}
 \end{figure}
@@ -220,12 +220,12 @@ Following Friedman et al. a single feature $X_j \in \mathbf{X}$ and its compleme
 \begin{figure}[htb]
 	\begin{center}
 		\includegraphics[height=175pt]{img/pdp_ice_sim_annotated.png}
-    \caption{Partial dependence and ICE curves for previously defined known signal-generating function $f$,  learned GBM response function $g_{\text{GBM}}$, and important input feature $\text{num}_9$.}
+    \caption{Partial dependence and ICE curves per response outcome for previously defined known signal-generating function $f$,  learned GBM response function $g_{\text{GBM}}$, and important input feature $\text{num}_9$.}
     \label{fig:global_pdp_ice}
 	\end{center}
 \end{figure}
 
-As in Section \ref{sec:surrogate_dt}, simulated data is used to highlight desirable characteristics of partial dependence and ICE plots. In Figure \ref{fig:global_pdp_ice} partial dependence and ICE at the minimum, maximum, and each decile of $g_{\text{GBM}}(\mathbf{X})$ are plotted.
+As in Section \ref{sec:surrogate_dt}, simulated data is used to highlight desirable characteristics of partial dependence and ICE plots. In Figure \ref{fig:global_pdp_ice} partial dependence and ICE at the minimum, maximum, and each decile of $g_{\text{GBM}}(\mathbf{X})$ are plotted per response outcome.
 
 \subsubsection{Recommendations}
 
