@@ -28,6 +28,14 @@
 \usepackage{microtype}      % microtypography
 \usepackage{graphicx}
 
+% For algorithms
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsfonts}
+\usepackage{amstext}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
 \title{Explanations for Multinomial Classifiers\\\vspace{10pt}\small{Tips and Tricks for Practitioners}}
 
 % The \author macro works with any number of authors. There are two
@@ -65,6 +73,10 @@
 \end{abstract}
 
 \section{Introduction}
+
+This short discussion bookends popular and practical texts on machine learning explanations by Chaudhary, Gill, Hall et al by specifically addressing the common and somewhat vexing problem of explaining the behavior and predictions of multinomial classifiers \cite{oreillymli}, \cite{art_and_sci}, \cite{oreillyskater}.  
+
+%Difficulty of knowing if explanations are "right" -- this is why we chose simulated data.
 
 %-------------------------------------------------------------------------------
 \section{Notation} \label{sec:notation}
@@ -106,7 +118,42 @@ To facilitate technical descriptions of explanatory techniques, notation for inp
 
 \subsection{Decision Tree Surrogate}
 
+Given a learned function $g$, a set of learned output responses $g(\mathbf{X}) = \mathbf{\hat{Y}}$, and a tree splitting and pruning approach $\mathcal{A}$, a global -- or over all $\mathbf{X}$ -- surrogate decision tree $h_{\text{tree}}$ can be extracted such that $h_{\text{tree}}(\mathbf{X}) \approx g(\mathbf{X})$:
+
+\begin{equation}
+\mathbf{X}, g(\mathbf{X}) \xrightarrow{\mathcal{A}} h_{\text{tree}}
+\end{equation}
+
+\begin{figure}[htb]
+	\begin{center}
+		\includegraphics[height=200pt]{img/simple_tree_prepruned_simulated.png}
+		\label{fig:surrogate_dt}
+		\caption{}
+	\end{center}
+\end{figure}
+
+Prescribed methods for training $h_{\text{tree}}$ do exist \cite{dt_surrogate1} \cite{dt_surrogate2}. In practice, straightforward cross-validation and pruning approaches are often sufficient. Moreover, comparing cross-validated training error to traditional training error can give an indication of the stability of the single decision tree $h_{\text{tree}}$.
+
+Elegantly handles high cardinality targets.
+
 \subsection{Decision Boundary Plots}
+
+\begin{figure}[htb]
+	\begin{center}
+		\includegraphics[height=120pt]{img/decision_boundary_simulated_num1_num4.png}
+		\label{fig:global_db}
+		\caption{}
+	\end{center}
+\end{figure}
+
+What do if very high cardinality:
+
+\begin{itemize}
+
+\item 2- or 3-D plot against most important variables
+\item 2- or 3-D plot against sparse, interpretable extracted features: NMF, Sparse PCA
+
+\end{itemize}
 
 \subsection{Shapley Global Feature Importance}
 
@@ -118,20 +165,75 @@ To facilitate technical descriptions of explanatory techniques, notation for inp
 	\end{center}
 \end{figure}
 
+What do if very high cardinality:
+
+\begin{itemize}
+
+\item Examine top-K most frequent classes
+\item Examine top-K most accurate and inaccurate classes
+\item Examine classes with highest variance in sum(absolute(shap))
+
+\end{itemize}
 
 \subsection{Partial Dependence and ICE}
+
+Partial dependence (PD) plots are a widely-used method for describing the average predictions of a complex model $g$ across some partition of data $\mathbf{X}$ for some interesting input feature $X_j$ \cite{esl}. Individual conditional expectation (ICE) plots are a newer method that describes the local behavior of $g$ for a single instance $\mathbf{x} \in \mathcal{X}$. Partial dependence and ICE can be combined in the same plot to identify interactions modeled by $g$ and to create a holistic portrait of the predictions of a complex model for some $X_j$  \cite{ice_plots}.
+
 
 \begin{figure}[htb]
 	\begin{center}
 		\includegraphics[height=175pt]{img/pdp_ice_sim_annotated.png}
-		\label{fig:global_feature_imp}
+		\label{fig:global_pdp_ice}
 		\caption{}
 	\end{center}
 \end{figure}
 
+
+What do if very high cardinality:
+
+\begin{itemize}
+
+\item Examine top-K most frequent classes
+\item Examine top-K most accurate and inaccurate classes
+\item Examine classes with highest variance in partial dependence
+\item Examine classes with largest differences between partial dependence and ICE
+
+\end{itemize}
+
 \subsection{Shapley Local Feature Importance}
 
+Shapley explanations, including tree shap and even certain implementations of LIME, are a class of additive, consistent local feature contribution measures with long-standing theoretical support \cite{shapley}. Shapley explanations are the only possible locally accurate and consistent feature contribution values, meaning that Shapley explanation values for input features always sum to $g(\mathbf{x})$ and that Shapley explanation values can never decrease for some $x_j$ when $g$ is changed such that $x_j$ truly makes a stronger contribution to $g(\mathbf{x})$ \cite{shapley}. 
+
+
+\begin{equation}
+\label{eq:shap_additive}
+\begin{aligned}
+g(\mathbf{x}) = \phi_0 + \sum_{j=0}^{j=\mathcal{P} - 1} \phi_j \mathbf{z}_j
+\end{aligned}
+\end{equation}
+
+\begin{equation}
+\label{eq:shap_contrib}
+\begin{aligned}
+\phi_{j} = \sum_{S \subseteq \mathcal{P} \setminus \{j\}}\frac{|S|!(\mathcal{P} -|S| -1)!}{\mathcal{P}!}[g_x(S \cup \{j\}) - g_x(S)]
+\end{aligned}
+\end{equation}
+
+Shapley values can be estimated in different ways. Tree shap is a specific implementation of Shapley explanations. It does not rely on surrogate models. Both tree shap and a related technique known as \textit{treeinterpreter} rely instead on traversing internal tree structures to estimate the impact of each $x_j$ for some $g(\mathbf{x})$ of interest \cite{tree_shap}, \cite{treeinterpreter}.
+
+
+What do if very high cardinality:
+
 \section{Supplementary Materials}
+
+% Credit card use case, alternate figuree
+
+UCI credit card dataset \cite{uci}.
+
+\begin{center}
+  \url{https://github.com/navdeep-G/interpretable-ml/tree/master/notebooks}
+\end{center}
+
 %\section{Credit Card Data Use Case}
 %\subsection{Global Analysis}
 %\subsubsection{Decision Tree Surrogate}
@@ -296,5 +398,5 @@ acknowledgments in the anonymized submission, only in the final paper.
 %-------------------------------------------------------------------------------
 
 \bibliographystyle{plain}
-\bibliography{nips_multinomial_2018.tex}
+\bibliography{nips_multinomial_2018}
 \end{document}
