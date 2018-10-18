@@ -26,6 +26,7 @@
 \usepackage{amsfonts}       % blackboard math symbols
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
+\usepackage{graphicx}
 
 \title{Explanations for Multinomial Classifiers\\\vspace{10pt}\small{Tips and Tricks for Practitioners}}
 
@@ -65,20 +66,6 @@
 
 \section{Introduction}
 
-Interpretability of complex machine learning models is a multifaceted, complex, and still evolving subject. Others have defined key terms and put forward general motivations for better interpretability of machine learning models (and advocated for stronger scientific rigor in certain cases) \cite{been_kim1}, \cite{gilpin2018explaining}, \cite{guidotti2018survey}, \cite{lipton1}. This applied text side-steps some looming, unsettled intellectual matters to present viable practical methods for explaining the mechanisms and outputs of predictive models. In particular, this text will focus on multinomial classifiers as these type of classifiers have been absent across the machine learning interpretability literature. 
-
-Following Doshi-Velez and Kim, this discussion uses ``the ability to explain or to present in understandable terms to a human,'' as the definition of \textit{interpretable}. ``When you can no longer keep asking why,'' will serve as the working definition for a \textit{good explanation} of model mechanisms or predictions \cite{gilpin2018explaining}.
-  
-The presented explanatory methods should help practitioners make random forests, GBMs, and other types of popular supervised machine learning models more interpretable by enabling post-hoc explanations that are suitable for:\\
-
-\begin{itemize}
-	\item Facilitating regulatory compliance.
-	\item Understanding or debugging model mechanisms and predictions.
-	\item Preventing or debugging accidental or intentional discrimination by models.
-	\item Preventing or debugging the malicious hacking or adversarial attack of models.
-\end{itemize}
-
-Detailed discussions of the explanatory methods begin below by defining notation.
 %-------------------------------------------------------------------------------
 \section{Notation} \label{sec:notation}
 %-------------------------------------------------------------------------------
@@ -89,9 +76,9 @@ To facilitate technical descriptions of explanatory techniques, notation for inp
  
 	\begin{itemize}
 		\item Input features come from the set $\mathcal{X}$ contained in a \textit{P}-dimensional input space,\\ $\mathcal{X} \subset \mathbb{R}^P$.  
-		\item Known labels corresponding to instances of $\mathcal{X}$ come from the set $\mathcal{Y}$.
-		\item Learned output responses come from the set $\mathcal{\hat{Y}}$. % For regression models, the set $\mathcal{\hat{Y}}_r$ is also contained in a $C$-dimensional output space, $\mathcal{\hat{Y}}_r \subset \mathbb{R}^{C_r}$. For classification models, the set $\mathcal{\hat{Y}}_c$ typically contains a column vector for each unique class in $\mathcal{Y}$. Hence, $\mathcal{\hat{Y}}_c$ is contained in a $C'$-dimensional output space,  $\mathcal{\hat{Y}}_c \subset \mathbb{R}^{C'_c}$. 
-		\item The output responses come from a set $\mathcal{Y}$ contained in a $C$-dimensional output space (i.e. $\mathcal{Y} \subset \mathbb{R}^C$).
+		\item Known labels corresponding to instances of $\mathcal{X}$ come from the set $\mathcal{Y}$ contained in a \textit{C}-dimensional input space, $\mathcal{Y} \subset \mathbb{R}^C$.
+		\item Learned output responses come from the set $\hat{\mathcal{Y}}$. For classification models the set $\hat{\mathcal{Y}}$ typically contains a column vector for each unique class in $\mathcal{Y}$. In this text, the space $\hat{\mathcal{Y}}$ is said to be contained in a $C'$-dimensional output space,  $\hat{\mathcal{Y}} \subset \mathbb{R}^{C'}$. 
+%		\item The output responses come from a set $\mathcal{Y}$ contained in a $C$-dimensional output space (i.e. $\mathcal{Y} \subset \mathbb{R}^C$).
 	\end{itemize}	
 	
 	\subsection{Datasets} 
@@ -99,7 +86,7 @@ To facilitate technical descriptions of explanatory techniques, notation for inp
 	\begin{itemize}
 		\item The input dataset $\mathbf{X}$ is composed of observed instances of the set $\mathcal{X}$ with a corresponding dataset of labels $\mathbf{Y}$, observed instances of the set $\mathcal{Y}$.
 		\item Each $i$-th observation of $\mathbf{X}$ is denoted as $\mathbf{x}^{(i)} = $  
-		$[x_0^{(i)}, x_1^{(i)}, \dots, x_{\textit{P}-1}^{(i)}]$, with corresponding $i$-th labels in $\mathbf{Y}, \mathbf{y}^{(i)}$, and corresponding predictions in $\mathbf{\hat{Y}}, \mathbf{\hat{y}}^{(i)}$. % = [y_0^{(i)}, y_1^{(i)}, \dots, y_{\textit{C}-1}^{(i)}]$.
+		$[x_0^{(i)}, x_1^{(i)}, \dots, x_{\textit{P}-1}^{(i)}]$, with corresponding $i$-th labels in $\mathbf{Y}, \mathbf{y}^{(i)} = [y_0^{(i)}, y_1^{(i)}, \dots, y_{\textit{C}-1}^{(i)}]$, and corresponding predictions in $\mathbf{\hat{Y}}, \mathbf{\hat{y}}^{(i)} =  [\hat{y}_0^{(i)}, \hat{y}_1^{(i)}, \dots, \hat{y}_{\textit{C'}-1}^{(i)}]$. % = [y_0^{(i)}, y_1^{(i)}, \dots, y_{\textit{C}-1}^{(i)}]$.
 		\item $\mathbf{X}$ and $\mathbf{Y}$ consist of $N$ tuples of observations: $[(\mathbf{x}^{(0)},\mathbf{y}^{(0)}), (\mathbf{x}^{(1)},\mathbf{y}^{(1)}), \dots,$\\$(\mathbf{x}^{(N-1)},\mathbf{y}^{(N-1)})]$. %\\ $\mathbf{x}^{(i)} \in \mathcal{X}$, $\mathbf{y}^{(i)} \in \mathcal{Y}$.
 		\item Each $j$-th input column vector of $\mathbf{X}$ is denoted as $X_j = [x_{j}^{(0)}, x_{j}^{(1)}, \dots, x_{j}^{(N-1)}]^T$.
 	\end{itemize}	
@@ -109,37 +96,49 @@ To facilitate technical descriptions of explanatory techniques, notation for inp
 	\begin{itemize}
 		\item A type of machine learning model $g$, selected from a hypothesis set $\mathcal{H}$, is trained to represent an unknown signal-generating function $f$ observed as  $\mathbf{X}$ with labels $\mathbf{Y}$ using a training algorithm $\mathcal{A}$: 
 		%\\ $\mathbf{X}, \mathbf{Y} \xrightarrow{\mathcal{A}} g$.
-		\item $g$ generates learned output responses on the input dataset $g(\mathbf{X}) = \mathbf{\hat{Y}}$, and on the general input space $g(\mathcal{X}) = \mathcal{\hat{Y}}$.
+		\item $g$ generates learned output responses on the input dataset $g(\mathbf{X}) = \mathbf{\hat{Y}}$, and on the general input space $g(\mathcal{X}) = \hat{\mathcal{Y}}$.
 		\item The model to be explained is denoted as $g$.
 	\end{itemize}
 
-\section{Simulated Data Experiments}
+%\section{Simulated Data Experiments}
 
-\subsection{Global Analysis}
+\section{Global Analysis}
 
-\subsubsection{Decision Tree Surrogate}
+\subsection{Decision Tree Surrogate}
 
-\subsubsection{Decision Boundary Plots}
+\subsection{Decision Boundary Plots}
 
-\subsubsection{Comparison of Global Feature Importance Methods}
+\subsection{Shapley Global Feature Importance}
 
-\subsubsection{Partial Dependence and ICE}
+\begin{figure}[htb]
+	\begin{center}
+		\includegraphics[height=110pt]{img/shap_sim_horizontal_annotated.png}
+		\label{fig:global_feature_imp}
+		\caption{}
+	\end{center}
+\end{figure}
 
-\subsection{Local Analysis: Comparison of Local Feature Importance Methods}
 
-\section{Credit Card Data Use Case}
+\subsection{Partial Dependence and ICE}
 
-\subsection{Global Analysis}
+\begin{figure}[htb]
+	\begin{center}
+		\includegraphics[height=175pt]{img/pdp_ice_sim_annotated.png}
+		\label{fig:global_feature_imp}
+		\caption{}
+	\end{center}
+\end{figure}
 
-\subsubsection{Decision Tree Surrogate}
+\subsection{Shapley Local Feature Importance}
 
-\subsubsection{Decision Boundary Plots}
-
-\subsubsection{Shapley Global Feature Importance}
-
-\subsubsection{Partial Dependence and ICE}
-
-\subsection{Local Analysis: Local Shapley Feature Importance}
+\section{Supplementary Materials}
+%\section{Credit Card Data Use Case}
+%\subsection{Global Analysis}
+%\subsubsection{Decision Tree Surrogate}
+%\subsubsection{Decision Boundary Plots}
+%\subsubsection{Shapley Global Feature Importance}
+%\subsubsection{Partial Dependence and ICE}
+%\subsection{Local Analysis: Local Shapley Feature Importance}
 
 \section{Conclusion}
 
@@ -288,12 +287,14 @@ Note that \verb+amsfonts+ is automatically loaded by the
 
 \subsubsection*{Acknowledgments}
 
-The authors wishes to thank Sri Ambati, Arno Candel, Mark Chan, Doug Deloy, Lauren DiPerna, Mateusz Dymczyk, Megan and Michal Kurka, Lingyao Meng, Mattias M\"uller, Wen Phan and other makers past and present at H2O.ai who turned explainability into a software application and learned the lessons discussed in this text along with us.
+Use unnumbered third level headings for the acknowledgments. All
+acknowledgments go at the end of the paper. Do not include
+acknowledgments in the anonymized submission, only in the final paper.
 
 %-------------------------------------------------------------------------------
 %\section{References}
 %-------------------------------------------------------------------------------
 
 \bibliographystyle{plain}
-\bibliography{nips_multinomial_2018}
+\bibliography{nips_multinomial_2018.tex}
 \end{document}
