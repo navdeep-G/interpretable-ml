@@ -129,7 +129,7 @@ A $g_{\text{GBM}}$ is trained as the base estimator to learn the patterns repres
 $ \mathbf{X}, \mathbf{f(X)} \xrightarrow{\mathcal{A}} g_{\text{GBM}}$ such that $g_{\text{GBM}} \approx f$. 
 
 \subsection{Decision Tree Surrogate} \label{sec:surrogate_dt}
-Given a learned function $g$, a set of learned output responses $g(\mathbf{X}) = \mathbf{\hat{Y}}$, and a tree splitting and pruning(pre or post pruning) approach $\mathcal{A}$, a surrogate decision tree $h_{\text{tree}}$ can be constructed to extract comprehensible and faithful concepts such that $h_{\text{tree}}(\mathbf{X}) \approx g_{\text{GBM}}(\mathbf{X}) \approx f(\mathbf{X})$:
+Given a learned function $g$, a set of learned output responses $g(\mathbf{X}) = \mathbf{\hat{Y}}$, a surrogate decision tree(SDT) $h_{\text{tree}}$ can be constructed to extract comprehensible and faithful concepts such that $h_{\text{tree}}(\mathbf{X}) \approx g_{\text{GBM}}(\mathbf{X}) \approx f(\mathbf{X})$:
 
 \begin{equation}
 \mathbf{X}, g(\mathbf{X}) \xrightarrow{\mathcal{A}} h_{\text{tree}}
@@ -153,7 +153,14 @@ Given a learned function $g$, a set of learned output responses $g(\mathbf{X}) =
 	\caption{}
 \end{figure}
 
-In this learning task, the target labels are derived from the base estimators learned function. \cite{dt_surrogate1} \cite{dt_surrogate2} provide detained information for training $h_{\text{tree}}$. In practice, straightforward cross-validation and pruning approaches are often sufficient. Moreover, comparing cross-validated training error to traditional training error can give an indication of the stability of the single decision tree $h_{\text{tree}}$. Such form of surrogate models can elegantly handle high cardinality targets maintaining high level of fidelity and faithfulness to the Oracle(base estimator function $g$).
+In the above mentioned learning task, the target labels are derived from the base estimators learned function. \cite{dt_surrogate1} \cite{dt_surrogate2} provide detained information for training $h_{\text{tree}}$. 
+\subsubsection{Recommendations}
+\begin{itemize}
+\item In order to prevent SDT from creating overly complex un-interpretable "if-then-else" rules that do not generalize well, pruning(pre-pruning with cross validation or post-pruning by optimizing on the multi-class evaluation metic - e.g. f1-score, categorical cross entropy) can be applied to build stable trees.
+\item SDT can elegantly handle high cardinality targets maintaining high level of fidelity and faithfulness to the Oracle(base estimator function $g$)
+\item SDT provides can provide both global and local explanation.
+\item Remember to handle class imbalance before fitting a SDT using an oversampling technique - e.g. Synthetic Minority Over-sampling Technique(SMOTE) \cite{chawla2002smote}, Adaptive synthetic sampling approach for imbalanced learning(ADASYN) \cite{he2008adasyn}
+\end{itemize}
 
 \subsection{Decision Boundary Plots}
 Decision Boundaries is a hypersurface which provides informative interpretation to understand the characteristics of multiclass predictive model by visualizing the distances of the data elements to a model's learned decision plane. The boundary helps in providing a direct reference to the complexity of a classifier and the dataset \cite{rao1997visualizing} \cite{migut2015visualizing}. Figure 2 (a) and (d) illustrates different decision boundaries constructed using a GBM(Gradient Boosted Machine) and a MLP(Mulit-layer Perceptron classifier).
