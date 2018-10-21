@@ -230,16 +230,16 @@ g(\mathbf{x}) = \phi_0 + \sum_{j=0}^{j=\mathcal{P} - 1} \phi_j \mathbf{z}_j
 
 Shapley values can be estimated in different ways. Tree shap is a specific implementation of Shapley explanations. It does not rely on surrogate models. Both tree shap and a related technique known as \textit{treeinterpreter} rely instead on traversing internal tree structures to estimate the impact of each $x_j$ for some $g(\mathbf{x})$ of interest \cite{tree_shap}, \cite{treeinterpreter}.
 
+Simulated data is used to illustrate the utility of tree shap. Shapley explanations are estimated on $g_{\text{GBM}}(\mathbf{X})$ for a simulated test set $\mathbf{X}$ with known signal-generating function $f$. Results are presented in Figure \ref{fig:global_feature_imp}. Firstly, the Shapley explanations are shown globally across all class outcomes in a stacked bar chart broken down by absolute global Shapley values per class outcome. This is a good way to see a overall picture of Shapley explanations for multinomial classifiers. Secondly, the Shapley explanations are broken down per class outcome in subsequent charts. All feature contributions for $\text{num}_1, \text{num}_4, \text{num}_8$ and $\text{num}_9$ are seen as most important across all class outcomes both in the global stacked bar chart and per class outcome, which is expected based on Equation \ref{eq:f}. However, they are not seen in the same order. For example, class 0 and class 2 share the same ordering of $\text{num}_1, \text{num}_4, \text{num}_8$ and $\text{num}_9$ but class 1 does not ($\text{num}_1$ and $\text{num}_9$ are swapped). This information can be used to investigate why the Shapley explanataions differ between different class outcomes at a global level.
+
 \begin{figure}[!htbp]
 	\begin{center}
-		\includegraphics[height=103pt]{img/shap_sim_horizontal_annotated.png}
+		\includegraphics[height=135pt]{img/shap_sim_horizontal_annotated.png}
 		\caption{Shapley summary plot for known signal-generating function $f = \text{num} _1 * \text{num}_4 + |\text{num}_8| * \text{num}_9^2 + e$, and for learned GBM response function $g_{\text{GBM}}$ per response outcome.}
 		\label{fig:global_feature_imp}
 	\end{center}
 \end{figure}
 \FloatBarrier
-
-Simulated data is used to illustrate the utility of tree shap. Shapley explanations are estimated on $g_{\text{GBM}}(\mathbf{X})$ for a simulated test set $\mathbf{X}$ with known signal-generating function $f$. Results are presented in Figure \ref{fig:global_feature_imp}. Firstly, the Shapley explanations are shown globally across all class outcomes in a stacked bar chart broken down by absolute global Shapley values per class outcome. This is a good way to see a overall picture of Shapley explanations for multinomial classifiers. Secondly, the Shapley explanations are broken down per class outcome in subsequent charts. All feature contributions for $\text{num}_1, \text{num}_4, \text{num}_8$ and $\text{num}_9$ are seen as most important across all class outcomes both in the global stacked bar chart and per class outcome. However, they are not seen in the same order. For example, class 0 and class 2 share the same ordering of $\text{num}_1, \text{num}_4, \text{num}_8$ and $\text{num}_9$ but class 1 does not ($\text{num}_1$ and $\text{num}_9$ are swapped). This information can be used to investigate why the Shapley explanataions differ between different class outcomes at a global level.
 
 \subsubsection{Recommendations}
 
@@ -269,16 +269,16 @@ Partial dependence (PD) plots are a widely-used method for describing the averag
 	
 Following Friedman et al. a single feature $X_j \in \mathbf{X}$ and its complement set $\mathbf{X}_{(-j)} \in \mathbf{X}$ (where $X_j \cup \mathbf{X}_{(-j)} = \mathbf{X}$) is considered. $\text{PD}(X_j, g)$ for a given feature $X_j$ is estimated as the average output for a particular class outcome, $C'$, of the learned function $g(\mathbf{X})$ when all the components of $X_j$ are set to a constant $x \in \mathcal{X}$ and $\mathbf{X}_{(-j)}$ is left unchanged. $\text{ICE}(x_j, \mathbf{x}, g)$ for a given instance $\mathbf{x}$ and feature $x_j$ is estimated as the output for a particular class outcome, $C'$, for $g(\mathbf{x})$ when $x_j$ is set to a constant $x \in \mathcal{X}$ and all other features $\mathbf{x} \in \mathbf{X}_{(-j)}$ are left untouched. Partial dependence and ICE curves are usually plotted over some set of constants $x \in \mathcal{X}$. 
 
+As in Section \ref{sec:surrogate_dt}, simulated data is used to highlight desirable characteristics of partial dependence and ICE plots. In Figure \ref{fig:global_pdp_ice} partial dependence and ICE at the minimum, maximum, and each decile of $g_{\text{GBM}}(\mathbf{X})$ are plotted per response outcome. The known quadratic behavior of $\text{num}_9$ is plainly visible, except for low/high value predictions across certain deciles per response outcome. When partial dependence and ICE curves diverge, this often points to an interaction that is being averaged out of the partial dependence. Given the form of Equation \ref{eq:f}, there is a known interaction between $\text{num}_9$ and $\text{num}_8$. Combining the information from partial dependence and ICE plots with $h_{tree}$ can help elucidate more detailed information about modeled interactions in $g$.
+
 \begin{figure}[!htbp]
 	\begin{center}
-		\includegraphics[height=118pt]{img/pdp_ice_sim_annotated.png}
+		\includegraphics[height=175pt]{img/pdp_ice_sim_annotated.png}
     \caption{Partial dependence and ICE curves per response outcome for previously defined known signal-generating function $f$,  learned GBM response function $g_{\text{GBM}}$, and important input feature $\text{num}_9$.}
     \label{fig:global_pdp_ice}
 	\end{center}
 \end{figure}
 \FloatBarrier
-
-As in Section \ref{sec:surrogate_dt}, simulated data is used to highlight desirable characteristics of partial dependence and ICE plots. In Figure \ref{fig:global_pdp_ice} partial dependence and ICE at the minimum, maximum, and each decile of $g_{\text{GBM}}(\mathbf{X})$ are plotted per response outcome. The known quadratic behavior of $\text{num}_9$ is plainly visible, except for low/high value predictions across certain deciles. When partial dependence and ICE curves diverge, this often points to an interaction that is being averaged out of the partial dependence. Given the form of Equation \ref{eq:f}, there is a known interaction between $\text{num}_9$ and $\text{num}_8$. Combining the information from partial dependence and ICE plots with $h_{tree}$ can help elucidate more detailed information about modeled interactions in $g$.
 
 \subsubsection{Recommendations}
 
@@ -306,7 +306,7 @@ As in Section \ref{sec:surrogate_dt}, simulated data is used to highlight desira
 UCI credit card dataset \cite{uci}.
 
 \begin{center}
-  \url{https://github.com/navdeep-G/interpretable-ml/tree/master/notebooks}
+  \url{https://github.com/navdeep-G/interpretable-ml/tree/master/notebooks/credit/multinomial}
 \end{center}
 
 %\section{Credit Card Data Use Case}
