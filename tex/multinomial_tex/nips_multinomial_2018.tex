@@ -76,7 +76,7 @@
 
 \section{Introduction}
 
-This short discussion bookends popular and practical texts on machine learning explanations by Choudhary, Gill, Hall et al. by specifically addressing the common and somewhat vexing problem of explaining the behavior and predictions of supervised multinomial classifiers \cite{oreillymli}, \cite{art_and_sci}, \cite{oreillyskater}. This paper is a continuation of ongoing research and our understanding of various techniques that are useful to understand a complex "black box" model's decision policies.
+This short discussion bookends popular and practical texts on machine learning explanations by Choudhary, Gill, Hall et al. by specifically addressing the common and somewhat vexing problem of explaining the behavior and predictions of supervised multinomial classifiers \cite{oreillymli}, \cite{art_and_sci}, \cite{oreillyskater} \cite{sarkar2018practical}. This paper is a continuation of ongoing research and our understanding of various techniques that are useful to understand a complex "black box" model's decision policies.
 
 %Difficulty of knowing if explanations are "right" -- this is why we chose simulated data.
 
@@ -116,21 +116,20 @@ To facilitate technical descriptions of explanatory techniques, notation for inp
 
 %\section{Simulated Data Experiments}
 
-\section{Global Analysis}
+\section{Analysis using Global and Local Interpretataion}
 
 \subsection{Data}
-Subsequent sections will use simulated data that empirically demonstrates the desired relationships between input feature importance and interactions in the input space $\mathbf{X}$, the label space $f(\mathbf{X}) = \mathbf{Y}$, a GBM model to be explained $g_{\text{GBM}}$, and a decision tree surrogate $h_{\text{tree}}$. Data with a known signal-generating function depending on four input features with interactions and with eight noise features is simulated such that: 
-
+Subsequent sections will use simulated data to empirically demonstrates the desired relationships and interaction between input feature space $\mathbf{X}$, the output space $f(\mathbf{X}) = \mathbf{Y}$. Simulated data is generated using a pre-defined signal-generating function using four input features with interactions and with eight noisy features with ground truth containing three unique categories(class 1, class 2, class 3) as defined below,
 \begin{equation}
 \label{eq:f}
 f = \text{num} _1 * \text{num}_4 + |\text{num}_8| * \text{num}_9^2 + e
 \end{equation}
 
-\noindent$g_{\text{GBM}}$ is trained: $ \mathbf{X}, \mathbf{f(X)} \xrightarrow{\mathcal{A}} g_{\text{GBM}}$ such that $g_{\text{GBM}} \approx f$. Then $h_{\text{tree}}$ is extracted by $\mathbf{X}, g_{\text{GBM}}(\mathbf{X}) \xrightarrow{\mathcal{A}} h_{\text{tree}}$, such that $h_{\text{tree}}(\mathbf{X}) \approx g_{\text{GBM}}(\mathbf{X}) \approx f(\mathbf{X})$.
+A $g_{\text{GBM}}$ is trained as the base estimator to learn the patterns represented using multinomial logloss as the optimization function and softmax is used to generate the final predictions. 
+$ \mathbf{X}, \mathbf{f(X)} \xrightarrow{\mathcal{A}} g_{\text{GBM}}$ such that $g_{\text{GBM}} \approx f$. 
 
 \subsection{Decision Tree Surrogate} \label{sec:surrogate_dt}
-
-Given a learned function $g$, a set of learned output responses $g(\mathbf{X}) = \mathbf{\hat{Y}}$, and a tree splitting and pruning(pre or post pruning) approach $\mathcal{A}$, a surrogate decision tree $h_{\text{tree}}$ can be constructed to extract comprehensible and faithful concepts such that $h_{\text{tree}}(\mathbf{X}) \approx g(\mathbf{X})$:
+Given a learned function $g$, a set of learned output responses $g(\mathbf{X}) = \mathbf{\hat{Y}}$, and a tree splitting and pruning(pre or post pruning) approach $\mathcal{A}$, a surrogate decision tree $h_{\text{tree}}$ can be constructed to extract comprehensible and faithful concepts such that $h_{\text{tree}}(\mathbf{X}) \approx g_{\text{GBM}}(\mathbf{X}) \approx f(\mathbf{X})$:
 
 \begin{equation}
 \mathbf{X}, g(\mathbf{X}) \xrightarrow{\mathcal{A}} h_{\text{tree}}
@@ -157,7 +156,7 @@ Given a learned function $g$, a set of learned output responses $g(\mathbf{X}) =
 In this learning task, the target labels are derived from the base estimators learned function. \cite{dt_surrogate1} \cite{dt_surrogate2} provide detained information for training $h_{\text{tree}}$. In practice, straightforward cross-validation and pruning approaches are often sufficient. Moreover, comparing cross-validated training error to traditional training error can give an indication of the stability of the single decision tree $h_{\text{tree}}$. Such form of surrogate models can elegantly handle high cardinality targets maintaining high level of fidelity and faithfulness to the Oracle(base estimator function $g$).
 
 \subsection{Decision Boundary Plots}
-Decision Boundaries is an informative interpretation technique to understand the characteristics of multiclass predictive model by visualizing the distances of the data elements to a model's learned decision plane. The boundary helps in providing a direct reference to the complexity of a classifier and the dataset. Figure 2 (a) and (d) illustrates different decision boundaries constructed using a GBM(Gradient Boosted Machine) and a MLP(Mulit-layer Perceptron classifier).
+Decision Boundaries is a hypersurface which provides informative interpretation to understand the characteristics of multiclass predictive model by visualizing the distances of the data elements to a model's learned decision plane. The boundary helps in providing a direct reference to the complexity of a classifier and the dataset \cite{rao1997visualizing} \cite{migut2015visualizing}. Figure 2 (a) and (d) illustrates different decision boundaries constructed using a GBM(Gradient Boosted Machine) and a MLP(Mulit-layer Perceptron classifier).
 Such representation provides global interpretation using the two or three dimensional feature vector $X$,
 \begin{align}
     X &= \begin{bmatrix}
@@ -170,14 +169,14 @@ Such representation provides global interpretation using the two or three dimens
 	\begin{subfigure}[tb]{.5\textwidth}
 		\begin{center}
 			\includegraphics[width=\linewidth]{img/decision_boundary_simulated_num1_num4.png}
-			\caption{Explain the figure}
+			\caption{}
 			\label{fig:global_db}
 		\end{center}
 	\end{subfigure}%
 	\begin{subfigure}[tb]{.5\textwidth}
 		\begin{center}
 			\includegraphics[width=\linewidth]{img/db_num_8_num9_xg}
-			\caption{Explain the figure}
+			\caption{}
 			\label{fig:global_db}
 		\end{center}
 	\end{subfigure}%
@@ -185,27 +184,30 @@ Such representation provides global interpretation using the two or three dimens
 	\begin{subfigure}[tb]{.5\textwidth}
 		\begin{center}
 			\includegraphics[width=\linewidth]{img/decision_boundary_simulated_num12_num21.png}
-			\caption{Explain the figure}
+			\caption{}
 			\label{fig:global_db}
 			\end{center}
 	\end{subfigure}%
 	\begin{subfigure}[tb]{.5\textwidth}
 		\begin{center}
 			\includegraphics[width=\linewidth]{img/db_mlp_num1_num4}
-			\caption{Explain the figure}
+			\caption{}
 			\label{fig:global_db}
 		\end{center}
 	\end{subfigure}%
-	\caption{The color of the data points correspond to the color of the supplied ground truth labels. While the background color of the decision boundaries indicated class membership as learned by the estimator}
+	\caption{The color of the data points correspond to the color of the supplied ground truth labels("class1", "class 2", "class 3"). While the background color of the decision boundaries indicated class membership as learned by the GBM/MLP classifier}
 \end{figure}
 
 \subsubsection{Recommendations}
 \begin{itemize}
-	\item 
-	\item What to do if very high cardinality in response, $\mathbf{Y}$:
+	\item Decision Boundaries are widely used, easily understandable 2D or 3D scatter plots \cite{migut2015visualizing}
+	\item Is able to show data and class membership in original feature space which is helpful in understanding feature interaction.
+	\item Is model agnostic, and would work for any form of simple or complex("black box") model enabling effective model comparison.
+	\item Provides the ability to instantly identify critical and cost changing data points, data elements closer to the decision boundary
+	\item How do we handle high dimensional feature space \\ $\mathcal{X} \subset \mathbb{R}^P$?
 	\begin{itemize}
-		\item 2- or 3-D plot against most important variables
-		\item 2- or 3-D plot against sparse, interpretable extracted features: NMF, Sparse PCA
+		\item A matrix of 2D/3D decision boundary plots showing all combinations of the feature dimension. Top-K features could selected using the Shapely Feature Importance
+		\item Feature Selection/Extraction techniques could be applied to reduce the high-dimensional space - e.g. RFE, NMF, PCA, CCA, LDA
 	\end{itemize}
 \end{itemize}
 
@@ -230,7 +232,7 @@ g(\mathbf{x}) = \phi_0 + \sum_{j=0}^{j=\mathcal{P} - 1} \phi_j \mathbf{z}_j
 
 Shapley values can be estimated in different ways. Tree shap is a specific implementation of Shapley explanations. It does not rely on surrogate models. Both tree shap and a related technique known as \textit{treeinterpreter} rely instead on traversing internal tree structures to estimate the impact of each $x_j$ for some $g(\mathbf{x})$ of interest \cite{tree_shap}, \cite{treeinterpreter}.
 
-Simulated data is used to illustrate the utility of tree shap. Shapley explanations are estimated on $g_{\text{GBM}}(\mathbf{X})$ for a simulated test set $\mathbf{X}$ with known signal-generating function $f$. Results are presented in Figure \ref{fig:global_feature_imp}. Firstly, the Shapley explanations are shown globally across all class outcomes in a stacked bar chart broken down by absolute global Shapley values per class outcome. This is a good way to see a overall picture of Shapley explanations for multinomial classifiers. Secondly, the Shapley explanations are broken down per class outcome in subsequent charts. All feature contributions for $\text{num}_1, \text{num}_4, \text{num}_8$ and $\text{num}_9$ are seen as most important across all class outcomes both in the global stacked bar chart and per class outcome, which is expected based on Equation \ref{eq:f}. However, they are not seen in the same order. For example, class 0 and class 2 share the same ordering of $\text{num}_1, \text{num}_4, \text{num}_8$ and $\text{num}_9$ but class 1 does not ($\text{num}_1$ and $\text{num}_9$ are swapped). This information can be used to investigate why the Shapley explanataions differ between different class outcomes at a global level.
+Simulated data is used to illustrate the utility of tree shap. Shapley explanations are estimated on $g_{\text{GBM}}(\mathbf{X})$ for a simulated test set $\mathbf{X}$ with known signal-generating function $f$. Results are presented in Figure \ref{fig:global_feature_imp}. Firstly, the Shapley explanations are shown globally across all class outcomes in a stacked bar chart broken down by absolute global Shapley values per class outcome. This is a good way to see a overall picture of Shapley explanations for multinomial classifiers. Secondly, the Shapley explanations are broken down per class outcome in subsequent charts. All feature contributions for $\text{num}_1, \text{num}_4, \text{num}_8$ and $\text{num}_9$ are seen as most important across all class outcomes both in the global stacked bar chart and per class outcome, which is expected based on Equation \ref{eq:f}. However, they are not seen in the same order. For example, class 0 and class 2 share the same ordering of $\text{num}_1, \text{num}_4, \text{num}_8$ and $\text{num}_9$ but class 1 does not ($\text{num}_1$ and $\text{num}_9$ are swapped). This information can be used to investigate why the Shapley explanations differ between different class outcomes at a global level.
 
 \begin{figure}[!htbp]
 	\begin{center}
@@ -301,7 +303,7 @@ As in Section \ref{sec:surrogate_dt}, simulated data is used to highlight desira
 
 \section{Supplementary Materials}
 
-% Credit card use case, alternate figuree
+% Credit card use case, alternate figure
 
 UCI credit card dataset \cite{uci}.
 
@@ -319,151 +321,7 @@ UCI credit card dataset \cite{uci}.
 
 \section{Conclusion}
 
-\section{NIPS Style examples}
-
-\paragraph{Paragraphs}
-
-There is also a \verb+\paragraph+ command available, which sets the
-heading in bold, flush left, and inline with the text, with the
-heading followed by 1\,em of space.
-
-\subsection{Citations, figures, tables, references}
-\label{others}
-
-These instructions apply to everyone.
-
-\subsection{Citations within the text}
-
-The \verb+natbib+ package will be loaded for you by default.
-Citations may be author/year or numeric, as long as you maintain
-internal consistency.  As to the format of the references themselves,
-any style is acceptable as long as it is used consistently.
-
-The documentation for \verb+natbib+ may be found at
-\begin{center}
-  \url{http://mirrors.ctan.org/macros/latex/contrib/natbib/natnotes.pdf}
-\end{center}
-Of note is the command \verb+\citet+, which produces citations
-appropriate for use in inline text.  For example,
-\begin{verbatim}
-   \citet{hasselmo} investigated\dots
-\end{verbatim}
-produces
-\begin{quote}
-  Hasselmo, et al.\ (1995) investigated\dots
-\end{quote}
-
-If you wish to load the \verb+natbib+ package with options, you may
-add the following before loading the \verb+nips_2018+ package:
-\begin{verbatim}
-   \PassOptionsToPackage{options}{natbib}
-\end{verbatim}
-
-If \verb+natbib+ clashes with another package you load, you can add
-the optional argument \verb+nonatbib+ when loading the style file:
-\begin{verbatim}
-   \usepackage[nonatbib]{nips_2018}
-\end{verbatim}
-
-As submission is double blind, refer to your own published work in the
-third person. That is, use ``In the previous work of Jones et
-al.\ [4],'' not ``In our previous work [4].'' If you cite your other
-papers that are not widely available (e.g., a journal paper under
-review), use anonymous author names in the citation, e.g., an author
-of the form ``A.\ Anonymous.''
-
-\paragraph{New preprint option for 2018}
-
-If you wish to post a preprint of your work online, e.g., on arXiv,
-using the NIPS style, please use the \verb+preprint+ option. This will
-create a nonanonymized version of your work with the text
-``Preprint. Work in progress.''  in the footer. This version may be
-distributed as you see fit. Please \textbf{do not} use the
-\verb+final+ option, which should \textbf{only} be used for papers
-accepted to NIPS.
-
-At submission time, please omit the \verb+final+ and \verb+preprint+
-options. This will anonymize your submission and add line numbers to aid
-review. Please do \emph{not} refer to these line numbers in your paper
-as they will be removed during generation of camera-ready copies.
-
-The file \verb+nips_2018.tex+ may be used as a ``shell'' for writing
-your paper. All you have to do is replace the author, title, abstract,
-and text of the paper with your own.
-
-The formatting instructions contained in these style files are
-summarized in Sections \ref{gen_inst}, \ref{headings}, and
-\ref{others} below.
-
-\subsection{Footnotes}
-
-Footnotes should be used sparingly.  If you do require a footnote,
-indicate footnotes with a number\footnote{Sample of the first
-  footnote.} in the text. Place the footnotes at the bottom of the
-page on which they appear.  Precede the footnote with a horizontal
-rule of 2~inches (12~picas).
-
-Note that footnotes are properly typeset \emph{after} punctuation
-marks.\footnote{As in this example.}
-
-\subsection{Figures}
-
-\begin{figure}
-  \centering
-  \fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
-  \caption{Sample figure caption.}
-\end{figure}
-
-\subsection{Tables}
-
-Place one line space before the table title, one line space after the
-table title, and one line space after the table. The table title must
-be lower case (except for first word and proper nouns); tables are
-numbered consecutively.
-
-Note that publication-quality tables \emph{do not contain vertical
-  rules.} We strongly suggest the use of the \verb+booktabs+ package,
-which allows for typesetting high-quality, professional tables:
-\begin{center}
-  \url{https://www.ctan.org/pkg/booktabs}
-\end{center}
-This package was used to typeset Table~\ref{sample-table}.
-
-\begin{table}
-  \caption{Sample table title}
-  \label{sample-table}
-  \centering
-  \begin{tabular}{lll}
-    \toprule
-    \multicolumn{2}{c}{Part}                   \\
-    \cmidrule(r){1-2}
-    Name     & Description     & Size ($\mu$m) \\
-    \midrule
-    Dendrite & Input terminal  & $\sim$100     \\
-    Axon     & Output terminal & $\sim$10      \\
-    Soma     & Cell body       & up to $10^6$  \\
-    \bottomrule
-  \end{tabular}
-\end{table}
-
-The \verb+\bbold+ package almost always uses bitmap fonts.  You
-  should use the equivalent AMS Fonts:
-\begin{verbatim}
-   \usepackage{amsfonts}
-\end{verbatim}
-followed by, e.g., \verb+\mathbb{R}+, \verb+\mathbb{N}+, or
-\verb+\mathbb{C}+ for $\mathbb{R}$, $\mathbb{N}$ or $\mathbb{C}$.  You
-can also use the following workaround for reals, natural and complex:
-\begin{verbatim}
-   \newcommand{\RR}{I\!\!R} %real numbers
-   \newcommand{\Nat}{I\!\!N} %natural numbers
-   \newcommand{\CC}{I\!\!\!\!C} %complex numbers
-\end{verbatim}
-Note that \verb+amsfonts+ is automatically loaded by the
-\verb+amssymb+ package.
-
 \subsubsection*{Acknowledgments}
-
 Use unnumbered third level headings for the acknowledgments. All
 acknowledgments go at the end of the paper. Do not include
 acknowledgments in the anonymized submission, only in the final paper.
