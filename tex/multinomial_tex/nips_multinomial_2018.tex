@@ -28,6 +28,7 @@
 \usepackage{microtype}      % microtypography
 \usepackage{graphicx}
 \usepackage{placeins}
+\usepackage{subcaption}
 
 % For algorithms
 \usepackage{algorithm}
@@ -75,7 +76,7 @@
 
 \section{Introduction}
 
-This short discussion bookends popular and practical texts on machine learning explanations by Choudhary, Gill, Hall et al. by specifically addressing the common and somewhat vexing problem of explaining the behavior and predictions of supervised multinomial classifiers \cite{oreillymli}, \cite{art_and_sci}, \cite{oreillyskater}. This discussion is a continuation of ongoing research and our understanding of various techniques that are useful to understand a complex "black box" model's decision policies.
+This short discussion bookends popular and practical texts on machine learning explanations by Choudhary, Gill, Hall et al. by specifically addressing the common and somewhat vexing problem of explaining the behavior and predictions of supervised multinomial classifiers \cite{oreillymli}, \cite{art_and_sci}, \cite{oreillyskater}. This paper is a continuation of ongoing research and our understanding of various techniques that are useful to understand a complex "black box" model's decision policies.
 
 %Difficulty of knowing if explanations are "right" -- this is why we chose simulated data.
 
@@ -129,42 +130,85 @@ f = \text{num} _1 * \text{num}_4 + |\text{num}_8| * \text{num}_9^2 + e
 
 \subsection{Decision Tree Surrogate} \label{sec:surrogate_dt}
 
-Given a learned function $g$, a set of learned output responses $g(\mathbf{X}) = \mathbf{\hat{Y}}$, and a tree splitting and pruning approach $\mathcal{A}$, a global -- or over all $\mathbf{X}$ -- surrogate decision tree $h_{\text{tree}}$ can be extracted such that $h_{\text{tree}}(\mathbf{X}) \approx g(\mathbf{X})$:
+Given a learned function $g$, a set of learned output responses $g(\mathbf{X}) = \mathbf{\hat{Y}}$, and a tree splitting and pruning(pre or post pruning) approach $\mathcal{A}$, a surrogate decision tree $h_{\text{tree}}$ can be constructed to extract comprehensible and faithful concepts such that $h_{\text{tree}}(\mathbf{X}) \approx g(\mathbf{X})$:
 
 \begin{equation}
 \mathbf{X}, g(\mathbf{X}) \xrightarrow{\mathcal{A}} h_{\text{tree}}
 \end{equation}
 
 \begin{figure}[htb]
-	\begin{center}
-		\includegraphics[height=200pt]{img/simple_tree_prepruned_simulated.png}
-		\caption{}
-		\label{fig:surrogate_dt}
-	\end{center}
+	\begin{subfigure}[tb]{.5\textwidth}
+		\begin{center}
+			\includegraphics[height=150pt, width=\linewidth]{img/simple_tree_prepruned_simulated.png}
+			\caption{Explain the figure}
+			\label{fig:surrogate_dt}
+		\end{center}
+	\end{subfigure}%
+	\begin{subfigure}[tb]{.5\textwidth}
+		\begin{center}
+			\includegraphics[height=70pt, width=\linewidth]{img/decision_stumps_txt.png}
+			\caption{Explain the figure}
+			\label{fig:surrogate_dt}
+		\end{center}
+	\end{subfigure}%
+	\caption{}
 \end{figure}
 
-Prescribed methods for training $h_{\text{tree}}$ do exist \cite{dt_surrogate1} \cite{dt_surrogate2}. In practice, straightforward cross-validation and pruning approaches are often sufficient. Moreover, comparing cross-validated training error to traditional training error can give an indication of the stability of the single decision tree $h_{\text{tree}}$.
-
-Elegantly handles high cardinality targets.
+In this learning task, the target labels are derived from the base estimators learned function. \cite{dt_surrogate1} \cite{dt_surrogate2} provide detained information for training $h_{\text{tree}}$. In practice, straightforward cross-validation and pruning approaches are often sufficient. Moreover, comparing cross-validated training error to traditional training error can give an indication of the stability of the single decision tree $h_{\text{tree}}$. Such form of surrogate models can elegantly handle high cardinality targets maintaining high level of fidelity and faithfulness to the Oracle(base estimator function $g$).
 
 \subsection{Decision Boundary Plots}
+Decision Boundaries is an informative interpretation technique to understand the characteristics of multiclass predictive model by visualizing the distances of the data elements to a model's learned decision plane. The boundary helps in providing a direct reference to the complexity of a classifier and the dataset. Figure 2 (a) and (d) illustrates different decision boundaries constructed using a GBM(Gradient Boosted Machine) and a MLP(Mulit-layer Perceptron classifier).
+Such representation provides global interpretation using the two or three dimensional feature vector $X$,
+\begin{align}
+    X &= \begin{bmatrix}
+           x_{1} \\
+           x_{2} \\
+         \end{bmatrix}
+\end{align}
 
 \begin{figure}[htb]
-	\begin{center}
-		\includegraphics[height=120pt]{img/decision_boundary_simulated_num1_num4.png}
-		\caption{}
-		\label{fig:global_db}
-	\end{center}
+	\begin{subfigure}[tb]{.5\textwidth}
+		\begin{center}
+			\includegraphics[width=\linewidth]{img/decision_boundary_simulated_num1_num4.png}
+			\caption{Explain the figure}
+			\label{fig:global_db}
+		\end{center}
+	\end{subfigure}%
+	\begin{subfigure}[tb]{.5\textwidth}
+		\begin{center}
+			\includegraphics[width=\linewidth]{img/db_num_8_num9_xg}
+			\caption{Explain the figure}
+			\label{fig:global_db}
+		\end{center}
+	\end{subfigure}%
+	\vskip\baselineskip
+	\begin{subfigure}[tb]{.5\textwidth}
+		\begin{center}
+			\includegraphics[width=\linewidth]{img/decision_boundary_simulated_num12_num21.png}
+			\caption{Explain the figure}
+			\label{fig:global_db}
+			\end{center}
+	\end{subfigure}%
+	\begin{subfigure}[tb]{.5\textwidth}
+		\begin{center}
+			\includegraphics[width=\linewidth]{img/db_mlp_num1_num4}
+			\caption{Explain the figure}
+			\label{fig:global_db}
+		\end{center}
+	\end{subfigure}%
+	\caption{The color of the data points correspond to the color of the supplied ground truth labels. While the background color of the decision boundaries indicated class membership as learned by the estimator}
 \end{figure}
 
-What to do if very high cardinality in response, $\mathbf{Y}$:
-
+\subsubsection{Recommendations}
 \begin{itemize}
-
-\item 2- or 3-D plot against most important variables
-\item 2- or 3-D plot against sparse, interpretable extracted features: NMF, Sparse PCA
-
+	\item 
+	\item What to do if very high cardinality in response, $\mathbf{Y}$:
+	\begin{itemize}
+		\item 2- or 3-D plot against most important variables
+		\item 2- or 3-D plot against sparse, interpretable extracted features: NMF, Sparse PCA
+	\end{itemize}
 \end{itemize}
+
 
 \subsection{Shapley Global Feature Importance}
 
