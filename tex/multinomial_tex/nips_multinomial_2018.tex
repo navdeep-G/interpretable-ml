@@ -54,7 +54,7 @@
 \newcommand*\samethanks[1][\value{footnote}]{\footnotemark[#1]}
 \author{
   Pramit Choudhary\thanks{H2O.ai}\\
-  Los Angeles, CA\\
+  Mountain View, CA\\
   \texttt{pramit.choudhary@h2o.ai}\\
   \And
   Navdeep Gill\samethanks\\
@@ -116,7 +116,7 @@ To facilitate technical descriptions of explanatory techniques, notation for inp
 
 %\section{Simulated Data Experiments}
 
-\section{Analysis using Global and Local Interpretataion}
+\section{Global Analysis}
 
 \subsection{Data}
 Subsequent sections will use simulated data to empirically demonstrates the desired relationships and interaction between input feature space $\mathbf{X}$, the output space $f(\mathbf{X}) = \mathbf{Y}$. Simulated data is generated using a pre-defined signal-generating function using four input features with interactions and with eight noisy features with ground truth containing three unique categories(class 1, class 2, class 3) as defined below,
@@ -128,7 +128,7 @@ f = \text{num} _1 * \text{num}_4 + |\text{num}_8| * \text{num}_9^2 + e
 A $g_{\text{GBM}}$ is trained as the base estimator to learn the patterns represented using multinomial logloss as the optimization function and softmax is used to generate the final predictions. 
 $ \mathbf{X}, \mathbf{f(X)} \xrightarrow{\mathcal{A}} g_{\text{GBM}}$ such that $g_{\text{GBM}} \approx f$. 
 
-\subsection{Decision Tree Surrogate} \label{sec:surrogate_dt}
+\subsection{Interpretation via Decision Tree Surrogate} \label{sec:surrogate_dt}
 Given a learned function $g$, a set of learned output responses $g(\mathbf{X}) = \mathbf{\hat{Y}}$, a surrogate decision tree(SDT) $h_{\text{tree}}$ can be constructed to extract comprehensible and faithful concepts such that $h_{\text{tree}}(\mathbf{X}) \approx g_{\text{GBM}}(\mathbf{X}) \approx f(\mathbf{X})$:
 
 \begin{equation}
@@ -138,19 +138,21 @@ Given a learned function $g$, a set of learned output responses $g(\mathbf{X}) =
 \begin{figure}[htb]
 	\begin{subfigure}[tb]{.5\textwidth}
 		\begin{center}
-			\includegraphics[height=150pt, width=\linewidth]{img/simple_tree_prepruned_simulated.png}
-			\caption{Explain the figure}
+			\includegraphics[width=\linewidth]{img/sdt_tree}
+			\caption{}
 			\label{fig:surrogate_dt}
 		\end{center}
 	\end{subfigure}%
 	\begin{subfigure}[tb]{.5\textwidth}
 		\begin{center}
-			\includegraphics[height=70pt, width=\linewidth]{img/decision_stumps_txt.png}
-			\caption{Explain the figure}
+			\includegraphics[width=1.3\linewidth]{img/decision_stumps_txt.png}
+			\caption{}
 			\label{fig:surrogate_dt}
 		\end{center}
 	\end{subfigure}%
-	\caption{}
+	\captionsetup{font=footnotesize}
+	\caption{\textbf{a:} Illustrates the surrogate decision tree built on base estimator function $g_{\text{GBM}}$. Only the leaf nodes are colored clearly articulating the decision class. The non-leaf nodes highlights the important features(namely num1, num4, num9) 
+	which matches the results computed using the Shapely Feature ranking. \textbf{b:} Visualizes the decision stumps as a convenient text representation}
 \end{figure}
 
 In the above mentioned learning task, the target labels are derived from the base estimators learned function. \cite{dt_surrogate1} \cite{dt_surrogate2} provide detained information for training $h_{\text{tree}}$. 
@@ -158,11 +160,12 @@ In the above mentioned learning task, the target labels are derived from the bas
 \begin{itemize}
 \item In order to prevent SDT from creating overly complex un-interpretable "if-then-else" rules that do not generalize well, pruning(pre-pruning with cross validation or post-pruning by optimizing on the multi-class evaluation metic - e.g. f1-score, categorical cross entropy) can be applied to build stable trees.
 \item SDT can elegantly handle high cardinality targets maintaining high level of fidelity and faithfulness to the Oracle(base estimator function $g$)
-\item SDT provides can provide both global and local explanation.
-\item Remember to handle class imbalance before fitting a SDT using an oversampling technique - e.g. Synthetic Minority Over-sampling Technique(SMOTE) \cite{chawla2002smote}, Adaptive synthetic sampling approach for imbalanced learning(ADASYN) \cite{he2008adasyn}
+\item Remember to handle class imbalance before fitting a SDT using an oversampling technique - e.g. Synthetic Minority Over-sampling Technique(SMOTE) \cite{chawla2002smote}, Adaptive synthetic sampling approach for imbalanced learning(ADASYN) 
+\item Scope of Interpretation: Global and Local
+\cite{he2008adasyn}
 \end{itemize}
 
-\subsection{Decision Boundary Plots}
+\subsection{Interpretation via Decision Boundary Plots}
 Decision Boundaries is a hypersurface which provides informative interpretation to understand the characteristics of multiclass predictive model by visualizing the distances of the data elements to a model's learned decision plane. The boundary helps in providing a direct reference to the complexity of a classifier and the dataset \cite{rao1997visualizing} \cite{migut2015visualizing}. Figure 2 (a) and (d) illustrates different decision boundaries constructed using a GBM(Gradient Boosted Machine) and a MLP(Mulit-layer Perceptron classifier).
 Such representation provides global interpretation using the two or three dimensional feature vector $X$,
 \begin{align}
@@ -202,7 +205,9 @@ Such representation provides global interpretation using the two or three dimens
 			\label{fig:global_db}
 		\end{center}
 	\end{subfigure}%
-	\caption{The color of the data points correspond to the color of the supplied ground truth labels("class1", "class 2", "class 3"). While the background color of the decision boundaries indicated class membership as learned by the GBM/MLP classifier}
+	\captionsetup{font=footnotesize}
+	\caption{The color of the data points correspond to the color of the supplied ground truth labels("class1", "class 2", "class 3"). While the background color of the decision boundaries indicated class membership(i.e. separation and direction) as learned by the 
+	GBM(\textbf{Figures a, b, c})/MLP classifier(\textbf{Figure d:} Visualizes the decision boundary learned by a multi-layered MLP classifier, highlighting a different shape of the decision boundary as compared to GBM model(tree based models learn rectangular boundaries.}
 \end{figure}
 
 \subsubsection{Recommendations}
@@ -219,7 +224,7 @@ Such representation provides global interpretation using the two or three dimens
 \end{itemize}
 
 
-\subsection{Shapley Global Feature Importance}
+\subsection{Interpretation via Shapley Global Feature Importance}
 
 Shapley explanations, including tree shap and even certain implementations of LIME, are a class of additive, consistent local feature contribution measures with long-standing theoretical support \cite{shapley}. Shapley explanations are the only possible locally accurate and consistent feature contribution values, meaning that Shapley explanation values for input features always sum to $g(\mathbf{x})$ and that Shapley explanation values can never decrease for some $x_j$ when $g$ is changed such that $x_j$ truly makes a stronger contribution to $g(\mathbf{x})$ \cite{shapley}. 
 
@@ -244,6 +249,7 @@ Simulated data is used to illustrate the utility of tree shap. Shapley explanati
 \begin{figure}[!htbp]
 	\begin{center}
 		\includegraphics[height=135pt]{img/shap_sim_horizontal_annotated.png}
+		\captionsetup{font=footnotesize}
 		\caption{Shapley summary plot for known signal-generating function $f = \text{num} _1 * \text{num}_4 + |\text{num}_8| * \text{num}_9^2 + e$, and for learned GBM response function $g_{\text{GBM}}$ per response outcome.}
 		\label{fig:global_feature_imp}
 	\end{center}
@@ -272,7 +278,7 @@ Simulated data is used to illustrate the utility of tree shap. Shapley explanati
 
 %\subsection{Shapley Local Feature Importance}
 
-\subsection{Partial Dependence and ICE}
+\subsection{Interpretation via Partial Dependence and ICE}
 
 Partial dependence (PD) plots are a widely-used method for describing the average predictions of a complex model $g$ across some partition of data $\mathbf{X}$ for some interesting input feature $X_j$ \cite{esl}. Individual conditional expectation (ICE) plots are a newer method that describes the local behavior of $g$ for a single instance $\mathbf{x} \in \mathcal{X}$. Partial dependence and ICE can be combined in the same plot to identify interactions modeled by $g$ and to create a holistic portrait of the predictions of a complex model for some $X_j$  \cite{ice_plots}.
 	
