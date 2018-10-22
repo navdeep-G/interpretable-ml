@@ -146,7 +146,7 @@ $ \mathbf{X}, \mathbf{f(X)} \xrightarrow{\mathcal{A}} g_{\text{GBM}}$ such that 
 ** The performance metric reference in the \ref{eval-table} is for completeness. The goal of the paper is not to highlight the building the best possible model.
 
 \subsection{Interpretation via Decision Tree Surrogate} \label{sec:surrogate_dt}
-Given a learned function $g$, a set of learned output responses $g(\mathbf{X}) = \mathbf{\hat{Y}}$, a surrogate decision tree(SDT) $h_{\text{tree}}$ can be constructed to extract comprehensible and faithful concepts such that $h_{\text{tree}}(\mathbf{X}) \approx g_{\text{GBM}}(\mathbf{X}) \approx f(\mathbf{X})$:
+Given a learned function $g$ and a set of learned output responses $g(\mathbf{X}) = \mathbf{\hat{Y}}$, a surrogate decision tree(SDT) $h_{\text{tree}}$ can be constructed to extract comprehensible and faithful concepts such that $h_{\text{tree}}(\mathbf{X}) \approx g_{\text{GBM}}(\mathbf{X}) \approx f(\mathbf{X})$:
 
 \begin{equation}
 \mathbf{X}, g(\mathbf{X}) \xrightarrow{\mathcal{A}} h_{\text{tree}}
@@ -168,8 +168,8 @@ Given a learned function $g$, a set of learned output responses $g(\mathbf{X}) =
 		\end{center}
 	\end{subfigure}%
 	\captionsetup{font=footnotesize}
-	\caption{\textbf{a:} Illustrates the surrogate decision tree built on base estimator function $g_{\text{GBM}}$. Only the leaf nodes are colored clearly articulating the decision class. The non-leaf nodes highlights the important features(namely num1, num4, num9) 
-	which matches the results computed using the Shapely Feature ranking. \textbf{b:} Visualizes the decision stumps as a convenient text representation. The decision stumps highlights the rules learned by the SDT for a single prediction. The if-else then
+	\caption{\textbf{a:} Illustrates the surrogate decision tree built using the original estimator $g_{\text{GBM}}$. Only the leaf nodes are colored clearly articulating the decision class. The non-leaf nodes highlights the important features(namely num1, num4, 
+	num9) which matches the results computed using the Shapely Feature ranking. \textbf{b:} Visualizes the decision stumps as a convenient text representation. The decision stumps highlights the rules learned by the SDT for a single prediction. The if-else then
 	conditions contains the globally important features(num9, num1, num4) showing precise, consistent and faithful approximate representation learned by $g_{\text{GBM}}$}
 \end{figure}
 
