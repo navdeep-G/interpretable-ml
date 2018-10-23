@@ -81,6 +81,8 @@ This short discussion bookends popular and practical texts on machine learning e
 
 %Difficulty of knowing if explanations are "right" -- this is why we chose simulated data.
 
+%Technique of small multiples 
+
 %-------------------------------------------------------------------------------
 \section{Notation} \label{sec:notation}
 %-------------------------------------------------------------------------------
@@ -117,16 +119,14 @@ To facilitate technical descriptions of explanatory techniques, notation for inp
 
 %\section{Simulated Data Experiments}
 
-\section{Global Analysis}
-
-\subsection{Data}
-Subsequent sections will use simulated data to empirically demonstrates the desired relationships and interaction between input feature space $\mathbf{X}$, the output space $f(\mathbf{X}) = \mathbf{Y}$. Simulated data is generated using a pre-defined signal-generating function using four input features with interactions and with eight noisy features with ground truth containing three unique categories(class 1, class 2, class 3) as defined below,
+\subsection{Simulated Data}
+Subsequent sections will use simulated data to empirically demonstrate the desired relationships and interactions between input feature space $\mathbf{X}$, the output space $f(\mathbf{X}) = \mathbf{Y}$. Simulated data is generated using a pre-defined signal-generating function using four input features with interactions and with eight noisy features with ground truth containing three unique categories(class 0, class 1, class 2) as defined below,
 \begin{equation}
 \label{eq:f}
 f = \text{num} _1 * \text{num}_4 + |\text{num}_8| * \text{num}_9^2 + e
 \end{equation}
 
-A $g_{\text{GBM}}$ is trained as the base estimator to learn the patterns represented using multinomial logloss as the optimization function and softmax is used to generate the final predictions. 
+A $g_{\text{GBM}}$ is trained as the estimator to learn the patterns represented using multinomial logloss as the optimization function and softmax is used to generate the final predictions. 
 $ \mathbf{X}, \mathbf{f(X)} \xrightarrow{\mathcal{A}} g_{\text{GBM}}$ such that $g_{\text{GBM}} \approx f$. 
 
 \begin{table}[H]
@@ -136,17 +136,22 @@ $ \mathbf{X}, \mathbf{f(X)} \xrightarrow{\mathcal{A}} g_{\text{GBM}}$ such that 
   \begin{tabular}{lll}
     \toprule
     \cmidrule{1-2}
-    Dataset /Number of rows    & F1-score     & log-loss  \\
+    Dataset (Number of rows)    & F1-score     & log-loss  \\
     \midrule
-    Training set(20946) &  0.79 & 0.56     \\
-    Test set(9054)     &  0.70 & 0.71      \\
+    Training set (20946) &  0.79 & 0.56     \\
+    Test set (9054)     &  0.70 & 0.71      \\
     \bottomrule
   \end{tabular}
 \end{table}
-** The performance metric reference in the \ref{eval-table} is for completeness. The goal of the paper is not to highlight the building the best possible model.
 
-\subsection{Interpretation via Decision Tree Surrogate} \label{sec:surrogate_dt}
-Given a learned function $g$ and a set of learned output responses $g(\mathbf{X}) = \mathbf{\hat{Y}}$, a surrogate decision tree(SDT) $h_{\text{tree}}$ can be constructed to extract comprehensible and faithful concepts such that $h_{\text{tree}}(\mathbf{X}) \approx g_{\text{GBM}}(\mathbf{X}) \approx f(\mathbf{X})$:
+The performance metric reference in Table \ref{eval-table} is for completeness. The goal of the paper is not to highlight the building the best possible model.
+
+\section{Global Analysis}
+
+
+\subsection{Decision Tree Surrogate} \label{sec:surrogate_dt}
+
+Given a learned function $g$ and a set of learned output responses $g(\mathbf{X}) = \mathbf{\hat{Y}}$, a surrogate decision tree $h_{\text{tree}}$ can be constructed to extract comprehensible and faithful concepts such that $h_{\text{tree}}(\mathbf{X}) \approx g_{\text{GBM}}(\mathbf{X}) \approx f(\mathbf{X})$:
 
 \begin{equation}
 \mathbf{X}, g(\mathbf{X}) \xrightarrow{\mathcal{A}} h_{\text{tree}}
@@ -168,23 +173,26 @@ Given a learned function $g$ and a set of learned output responses $g(\mathbf{X}
 		\end{center}
 	\end{subfigure}%
 	\captionsetup{font=footnotesize}
-	\caption{\textbf{a:} Illustrates the surrogate decision tree built using the original estimator $g_{\text{GBM}}$. Only the leaf nodes are colored, clearly highlighting class membership. The non-leaf nodes highlights the important features(namely num1, num4, 
-	num9) which matches the results computed using the Shapely feature importance. \textbf{b:} Visualizes the decision stumps as a convenient text representation. The decision stumps highlight the rules learned by the SDT for a single input row. The nested 
+	\caption{\textbf{a:} Illustrates $h_{\text{tree}}$ built using the original estimator $g_{\text{GBM}}$. Only the leaf nodes are colored, clearly highlighting class membership. The non-leaf nodes highlights the important features(namely num1, num4, 
+	num9) which matches the other results throughout this text. \textbf{b:} Visualizes the decision stumps as a convenient text representation. The decision stumps highlight the rules learned by $h_{\text{tree}}$ for a single input row. The nested 
 	"As-then" conditions contain the globally important features(num9, num1, num4). The ground truth for referenced input row is \textit{"class-0"} but both the original model $g_{\text{GBM}}$ and explanation model $h_{\text{tree}}$ predicted \textit{"class-1"}.
 	Since, the explanation model has learned the original model's policies concisely, the explanations produced are a faithful approximate representation of the $g_{\text{GBM}}$}
 \end{figure}
 
-In the above mentioned learning task, the target labels are derived from the previously learned GBM response function $g_{\text{GBM}}$. \cite{dt_surrogate1} \cite{dt_surrogate2} provide detained information for training a tree surrogate $h_{\text{tree}}$. 
-\subsubsection{Recommendations}
+In the above mentioned learning task, the target labels are derived from the previously learned GBM response function $g_{\text{GBM}}$. \cite{dt_surrogate1} \cite{dt_surrogate2} provide other prescribed approaches for training a tree surrogate $h_{\text{tree}}$. 
+
+\paragraph{Recommendations}
 \begin{itemize}
-\item In order to prevent SDT from creating overly complex un-interpretable "if-then-else" rules that do not generalize well, pruning(pre-pruning with cross validation or post-pruning by optimizing on the multi-class evaluation metic - e.g. f1-score, categorical cross entropy) can be applied to build stable trees.
-\item SDT can elegantly handle high cardinality targets maintaining high level of fidelity and faithfulness to the original  estimator function $g$). The faithfulness of the decisions generated by SDT depends on how precisely the tree surrogates captures the decisions learned by the original estimator.
-\item Remember to handle class imbalance before fitting a SDT using an oversampling technique - e.g. Synthetic Minority Over-sampling Technique(SMOTE) \cite{chawla2002smote}, Adaptive synthetic sampling approach for imbalanced learning(ADASYN)\cite{he2008adasyn}
+\item In order to prevent $h_{\text{tree}}$ from creating overly complex un-interpretable "if-then-else" rules that do not generalize well, pruning(pre-pruning with cross validation or post-pruning by optimizing on the multi-class evaluation metic - e.g. f1-score, categorical cross entropy) can be applied to build stable trees.
+\item $h_{\text{tree}}$ can elegantly handle high cardinality targets maintaining a high level of fidelity and faithfulness to the original  estimator function $g$. The faithfulness of the decisions generated by $h_{\text{tree}}$ depends on how precisely the tree surrogates captures the decisions learned by the original estimator.
+\item Remember to handle class imbalance before fitting a $h_{\text{tree}}$ using an oversampling technique - e.g. Synthetic Minority Over-sampling Technique (SMOTE) \cite{chawla2002smote}, Adaptive synthetic sampling approach for imbalanced learning(ADASYN) \cite{he2008adasyn}.
 \end{itemize}
 
-\subsection{Interpretation via Decision Boundary Plots}
-Decision Boundaries is a hypersurface which provides informative interpretation to understand the characteristics of multiclass predictive model by visualizing the distances of the data elements to a model's learned decision plane. The boundary helps in providing a direct reference to the complexity of a classifier and the dataset \cite{rao1997visualizing} \cite{migut2015visualizing}. Figure 2 (a) and (d) illustrates different decision boundaries constructed using a GBM(Gradient Boosted Machine) and a MLP(Mulit-layer Perceptron classifier).
-Such representation provides global interpretation using the two or three dimensional feature vector $X$,
+\subsection{Decision Boundary Plots}
+
+Decision boundaries are a hypersurface which provides information to about the characteristics of supervised multinomial classifiers by visualizing the distances of the data instances to a classifiers learned decision plane. The boundary helps in providing a direct reference to the complexity of a classifier and the dataset \cite{rao1997visualizing}, \cite{migut2015visualizing}. Figure 2 (a) and (d) illustrates different decision boundaries constructed using a GBM (Gradient Boosted Machine) and a MLP (Mulit-layer Perceptron classifier).
+Such representation provides global explanations even high-cardinality targets using the two or three dimensional feature vectors selected from $X$. 
+
 \begin{align}
     X &= \begin{bmatrix}
            x_{1} \\
@@ -223,20 +231,20 @@ Such representation provides global interpretation using the two or three dimens
 		\end{center}
 	\end{subfigure}%
 	\captionsetup{font=footnotesize}
-	\caption{The color of the data points correspond to the color of the supplied ground truth labels("class1", "class 2", "class 3"). While the background color of the decision boundaries indicated class membership(i.e. separation and direction) as learned by the 
-	GBM(\textbf{Figures a, b, c}). \textbf{Figure d:} Visualizes the decision boundary learned by a multi-layered MLP classifier, highlighting a different shape of the decision boundary as compared to GBM model(tree based models learn rectangular 
+	\caption{The color of the data points correspond to the color of the supplied ground truth labels("class 0", "class 1", "class 2"). While the background color of the decision boundaries indicated class membership (i.e. separation and direction) as learned by the 
+	GBM (\textbf{Figures a, b, c}). \textbf{Figure d:} Visualizes the decision boundary learned by a multi-layered MLP classifier, highlighting a different shape of the decision boundary as compared to GBM model(tree based models learn rectangular 
 	boundaries.)}
 \end{figure}
 
 \subsubsection{Recommendations}
 \begin{itemize}
-	\item Decision Boundaries are widely used, easily understandable 2D or 3D scatter plots \cite{migut2015visualizing}
-	\item Is able to show data and class membership in original feature space which is helpful in understanding feature interaction.
-	\item Is model agnostic, and would work for any form of simple or complex("black box") model enabling effective model comparison.
-	\item Provides the ability to instantly identify critical and cost changing data points, data elements closer to the decision boundary
+	\item Decision boundaries are widely used, easily understandable 2D or 3D scatter plots well suited for helping to explain the behavior of multinomial classifiers \cite{migut2015visualizing}. 
+	\item Decision boundaries are able to show data and class membership in original feature space which is helpful in understanding feature interaction.
+	\item Decision boundaries are model agnostic and work well for any form of simple or complex ("black-box") model enabling effective model comparison.
+	\item Decision boundaries provide the ability to instantly identify critical and cost changing data points, e.g. those data instances closer to the decision boundary.
 	\item How do we handle high dimensional feature space \\ $\mathcal{X} \subset \mathbb{R}^P$?
 	\begin{itemize}
-		\item A matrix of 2D/3D decision boundary plots showing all combinations of the feature dimension. Top-K features could selected using the Shapely Feature Importance
+		\item A small multiples plot of 2D/3D decision boundaries showing many combinations of the most important features. Top features could be selected using the global Shapely feature importance.
 		\item Feature Selection/Extraction techniques could be applied to reduce the high-dimensional space - e.g. RFE, NMF, PCA, CCA, LDA
 	\end{itemize}
 \end{itemize}
