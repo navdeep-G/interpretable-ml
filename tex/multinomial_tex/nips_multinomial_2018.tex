@@ -265,13 +265,39 @@ Shapley values can be estimated in different ways. Tree shap is a specific imple
 Simulated data is used to illustrate the utility of tree shap. Shapley explanations are estimated on $g_{\text{GBM}}(\mathbf{X})$ for a simulated test set $\mathbf{X}$ with known signal-generating function $f$. Results are presented in Figure \ref{fig:global_feature_imp}. Firstly, the Shapley explanations are shown globally across all class outcomes in a stacked bar chart broken down by absolute global Shapley values per class outcome. This is a good way to see a overall picture of Shapley explanations for multinomial classifiers. Secondly, the Shapley explanations are broken down per class outcome in subsequent charts. All feature contributions for $\text{num}_1, \text{num}_4, \text{num}_8$ and $\text{num}_9$ are seen as most important across all class outcomes both in the global stacked bar chart and per class outcome, which is expected based on Equation \ref{eq:f}. However, they are not seen in the same order. For example, class 0 and class 2 share the same ordering of $\text{num}_1, \text{num}_4, \text{num}_8$ and $\text{num}_9$ but class 1 does not ($\text{num}_1$ and $\text{num}_9$ are swapped). This information can be used to investigate why the Shapley explanations differ between different class outcomes at a global level.
 
 \begin{figure}[H]
-	\begin{center}
-		\includegraphics[height=135pt]{img/shap_sim_horizontal_annotated.png}
-		\captionsetup{font=footnotesize}
-		\caption{Shapley summary plot for known signal-generating function $f = \text{num} _1 * \text{num}_4 + |\text{num}_8| * \text{num}_9^2 + e$, and for learned GBM response function $g_{\text{GBM}}$ per response outcome.}
-		\label{fig:global_feature_imp}
-	\end{center}
+	\begin{subfigure}[tb]{.5\textwidth}
+		\begin{center}
+			\includegraphics[width=\linewidth]{img/global_shap_sim.png}
+			\caption{}
+			\label{fig:global_shap}
+		\end{center}
+	\end{subfigure}%
+	\begin{subfigure}[tb]{.5\textwidth}
+		\begin{center}
+			\includegraphics[width=\linewidth]{img/class_0_shap_sim.png}
+			\caption{}
+			\label{fig:global_shap}
+		\end{center}
+	\end{subfigure}%
+	\vskip\baselineskip
+	\begin{subfigure}[tb]{.5\textwidth}
+		\begin{center}
+			\includegraphics[width=\linewidth]{img/class_1_shap_sim.png}
+			\caption{}
+			\label{ffig:global_shap}
+			\end{center}
+	\end{subfigure}%
+	\begin{subfigure}[tb]{.5\textwidth}
+		\begin{center}
+			\includegraphics[width=\linewidth]{img/class_2_shap_sim.png}
+			\caption{}
+			\label{fig:global_shap}
+		\end{center}
+	\end{subfigure}%
+	\captionsetup{font=footnotesize}
+	\caption{}
 \end{figure}
+
 \FloatBarrier
 
 \subsubsection{Recommendations}
@@ -304,13 +330,23 @@ Following Friedman et al. a single feature $X_j \in \mathbf{X}$ and its compleme
 
 As in Section \ref{sec:surrogate_dt}, simulated data is used to highlight desirable characteristics of partial dependence and ICE plots. In Figure \ref{fig:global_pdp_ice} partial dependence and ICE at the minimum, maximum, and each decile of $g_{\text{GBM}}(\mathbf{X})$ are plotted per response outcome. The known quadratic behavior of $\text{num}_9$ is plainly visible, except for low/high value predictions across certain deciles per response outcome. When partial dependence and ICE curves diverge, this often points to an interaction that is being averaged out of the partial dependence. Given the form of Equation \ref{eq:f}, there is a known interaction between $\text{num}_9$ and $\text{num}_8$. Combining the information from partial dependence and ICE plots with $h_{tree}$ can help elucidate more detailed information about modeled interactions in $g$.
 
-\begin{figure}[!htbp]
-	\begin{center}
-		\includegraphics[height=175pt]{img/pdp_ice_sim_annotated.png}
-    \caption{Partial dependence and ICE curves per response outcome for previously defined known signal-generating function $f$,  learned GBM response function $g_{\text{GBM}}$, and important input feature $\text{num}_9$.}
-    \label{fig:global_pdp_ice}
-	\end{center}
+\begin{figure}[H]
+	\begin{subfigure}[tb]{.5\textwidth}
+		\begin{center}
+			\includegraphics[width=\linewidth]{img/pdp_ice_sim_annotated_a.png}
+			\caption{}
+			\label{fig:global_shap}
+		\end{center}
+	\end{subfigure}%
+	\begin{subfigure}[tb]{.5\textwidth}
+		\begin{center}
+			\includegraphics[width=\linewidth]{img/pdp_ice_sim_annotated_b.png}
+			\caption{}
+			\label{fig:global_shap}
+		\end{center}
+	\end{subfigure}%
 \end{figure}
+
 \FloatBarrier
 
 \subsubsection{Recommendations}
