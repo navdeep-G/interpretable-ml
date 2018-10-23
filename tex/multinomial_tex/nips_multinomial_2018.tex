@@ -168,9 +168,10 @@ Given a learned function $g$ and a set of learned output responses $g(\mathbf{X}
 		\end{center}
 	\end{subfigure}%
 	\captionsetup{font=footnotesize}
-	\caption{\textbf{a:} Illustrates the surrogate decision tree built using the original estimator $g_{\text{GBM}}$. Only the leaf nodes are colored clearly articulating the decision class. The non-leaf nodes highlights the important features(namely num1, num4, 
-	num9) which matches the results computed using the Shapely Feature ranking. \textbf{b:} Visualizes the decision stumps as a convenient text representation. The decision stumps highlights the rules learned by the SDT for a single prediction. The if-else then
-	conditions contains the globally important features(num9, num1, num4) showing precise, consistent and faithful approximate representation learned by $g_{\text{GBM}}$}
+	\caption{\textbf{a:} Illustrates the surrogate decision tree built using the original estimator $g_{\text{GBM}}$. Only the leaf nodes are colored, clearly highlighting class membership. The non-leaf nodes highlights the important features(namely num1, num4, 
+	num9) which matches the results computed using the Shapely feature importance. \textbf{b:} Visualizes the decision stumps as a convenient text representation. The decision stumps highlight the rules learned by the SDT for a single input row. The nested 
+	"As-then" conditions contain the globally important features(num9, num1, num4). The ground truth for referenced input row is \textit{"class-0"} but both the original model $g_{\text{GBM}}$ and explanation model $h_{\text{tree}}$ predicted \textit{"class-1"}.
+	Since, the explanation model has learned the original model's policies concisely, the explanations produced are a faithful approximate representation of the $g_{\text{GBM}}$}
 \end{figure}
 
 In the above mentioned learning task, the target labels are derived from the previously learned GBM response function $g_{\text{GBM}}$. \cite{dt_surrogate1} \cite{dt_surrogate2} provide detained information for training a tree surrogate $h_{\text{tree}}$. 
@@ -194,14 +195,14 @@ Such representation provides global interpretation using the two or three dimens
 \begin{figure}[H]
 	\begin{subfigure}[tb]{.5\textwidth}
 		\begin{center}
-			\includegraphics[width=\linewidth]{img/decision_boundary_simulated_num1_num4.png}
+			\includegraphics[width=\linewidth]{img/db_num1_num4}
 			\caption{}
 			\label{fig:global_db}
 		\end{center}
 	\end{subfigure}%
 	\begin{subfigure}[tb]{.5\textwidth}
 		\begin{center}
-			\includegraphics[width=\linewidth]{img/db_num_8_num9_xg}
+			\includegraphics[width=\linewidth]{img/db_num_8_num9}
 			\caption{}
 			\label{fig:global_db}
 		\end{center}
@@ -209,7 +210,7 @@ Such representation provides global interpretation using the two or three dimens
 	\vskip\baselineskip
 	\begin{subfigure}[tb]{.5\textwidth}
 		\begin{center}
-			\includegraphics[width=\linewidth]{img/decision_boundary_simulated_num12_num21.png}
+			\includegraphics[width=\linewidth]{img/db_num12_num21}
 			\caption{}
 			\label{fig:global_db}
 			\end{center}
