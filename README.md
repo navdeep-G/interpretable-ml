@@ -2,7 +2,7 @@
 
 ##### **A collection of code, notebooks, and resources in relation to interpretable machine learning.**
 
-##### **Want to contribute your own examples/code?** Just make a pull request.
+##### **Want to contribute your own examples/code/resources?** Just make a pull request.
 
 ### Setup
 ```
@@ -17,11 +17,13 @@ pip install -r jupyter-notebooks/requirements.txt
 3. sudo apt-get install --reinstall build-essential
 ```
 ### Contents 
-* An overview of interpretable ML techniques can be found [here](https://github.com/navdeep-G/interpretable-ml/tree/master/interpretable_ml.pdf)
-* Use Cases:
+* An overview of interpretable machine learning techniques can be found [here](https://github.com/navdeep-G/interpretable-ml/tree/master/interpretable_ml.pdf)
+
+* Interpretable Machine Learning Use Cases:
+
 	* Financial Services:
-  		* [Binomial (UCI creditcard dataset) ](https://github.com/navdeep-G/interpretable-ml/tree/master/jupyter-notebooks/credit/binomial)
-  		* [Multinomial (UCI creditcard dataset)](https://github.com/navdeep-G/interpretable-ml/tree/master/jupyter-notebooks/credit/multinomial)
+  		* [UCI creditcard dataset (Binary Classification)](https://github.com/navdeep-G/interpretable-ml/tree/master/jupyter-notebooks/credit/binomial)
+  		* [UCI creditcard dataset (Multinomial Classification)](https://github.com/navdeep-G/interpretable-ml/tree/master/jupyter-notebooks/credit/multinomial)
   	* Simulated Data:
-  		* [Binomial](https://github.com/navdeep-G/interpretable-ml/tree/master/jupyter-notebooks/simulated/binomial)
-  		* [Multinomial](https://github.com/navdeep-G/interpretable-ml/tree/master/jupyter-notebooks/simulated/multinomial)
+  		* [Binary Classfication](https://github.com/navdeep-G/interpretable-ml/tree/master/jupyter-notebooks/simulated/binomial)
+  		* [Multinomial Classification](https://github.com/navdeep-G/interpretable-ml/tree/master/jupyter-notebooks/simulated/multinomial)
