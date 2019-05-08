@@ -1,0 +1,26 @@
+\section{Leave One Covariate Out}
+
+\begin{frame}[c]
+\Huge{\centerline{Leave One Covariate Out}}
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+\begin{frame}\frametitle{Leave One Covariate Out}
+	\begin{itemize}		
+			\item Leave-one-covariate-out (LOCO) provides the feature importance values at a per-observation level (i.e. what is the feature importance of $X_j$ for observation $\mathbf{x}^{(i)}$).
+			\bigskip
+			\item LOCO is calculated by subtracting a model's prediction, $g(\mathbf{x}^{(i)})$, for a row-observation with all its features, from that model's prediction for the same row \textit{without} the input feature $X_j$ of interest. 	
+		\begin{equation}
+                           \begin{aligned}\label{eq:rf}
+                            g(\mathbf{x}_{(-j)}^{(i)}) - g(\mathbf{x}^{(i)}),
+                            \end{aligned}
+		\end{equation}
+where $\mathbf{x}_{(-j)}^{(i)} \in \mathcal{P}_{(-j)}$, given that $\mathcal{P}_{(-j)}$ is the complement set to $\{X_j\} \in \mathcal{P}$ (i.e $\{X_j\} \cup \mathcal{P}_{(-j)} = \mathcal{P}$).
+	\end{itemize}
+\end{frame}
+%----------------------------------------------------------------------------------------
+
+
+
+
+
