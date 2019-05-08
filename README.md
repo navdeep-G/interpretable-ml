@@ -4,7 +4,7 @@
 
 ##### **Want to contribute your own examples/code/resources?** Just make a pull request.
 
-### Setup
+## Setup
 ```
 cd interpretable-ml
 virtualenv -p python3.6 env
@@ -16,7 +16,7 @@ pip install -r jupyter-notebooks/requirements.txt
 2. sudo apt-get install gcc
 3. sudo apt-get install --reinstall build-essential
 ```
-### Contents 
+## Contents 
 * [**Overview of interpretable machine learning techniques**](https://github.com/navdeep-G/interpretable-ml/tree/master/interpretable_ml.pdf)
 * **Interpretable Machine Learning Use Cases**
 	* **Jupyter Notebooks**
