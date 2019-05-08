@@ -17,12 +17,12 @@ pip install -r jupyter-notebooks/requirements.txt
 3. sudo apt-get install --reinstall build-essential
 ```
 ### Contents 
-* An overview of interpretable machine learning techniques can be found [here](https://github.com/navdeep-G/interpretable-ml/tree/master/interpretable_ml.pdf)
-* Interpretable Machine Learning Use Cases:
-	* Jupyter Notebooks
-		* Financial Services
+* [**Overview of interpretable machine learning techniques**](https://github.com/navdeep-G/interpretable-ml/tree/master/interpretable_ml.pdf)
+* **Interpretable Machine Learning Use Cases**
+	* **Jupyter Notebooks**
+		* *Financial Services*
   			* [UCI creditcard dataset (Binary Classification)](https://github.com/navdeep-G/interpretable-ml/tree/master/jupyter-notebooks/credit/binomial)
   			* [UCI creditcard dataset (Multinomial Classification)](https://github.com/navdeep-G/interpretable-ml/tree/master/jupyter-notebooks/credit/multinomial)
-		* Simulated Data
+		* *Simulated Data*
   			* [Binary Classfication](https://github.com/navdeep-G/interpretable-ml/tree/master/jupyter-notebooks/simulated/binomial)
   			* [Multinomial Classification](https://github.com/navdeep-G/interpretable-ml/tree/master/jupyter-notebooks/simulated/multinomial)
