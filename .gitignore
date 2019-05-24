@@ -1,15 +1,15 @@
 *.DS_Store
 
 #Python
-jupyter-notebooks/simulated/.ipynb_checkpoints/
-jupyter-notebooks/credit/.ipynb_checkpoints/
-jupyter-notebooks/env/
-jupyter-notebooks/simulated/__pycache__/
-jupyter-notebooks/__pycache__/
-jupyter-notebooks/simulated/multinomial/.ipynb_checkpoints/
-jupyter-notebooks/credit/multinomial/.ipynb_checkpoints/
-jupyter-notebooks/credit/binomial/.ipynb_checkpoints/
-jupyter-notebooks/simulated/binomial/.ipynb_checkpoints/
+python/jupyter-notebooks/simulated/.ipynb_checkpoints/
+python/jupyter-notebooks/credit/.ipynb_checkpoints/
+python/jupyter-notebooks/env/
+python/jupyter-notebooks/simulated/__pycache__/
+python/jupyter-notebooks/__pycache__/
+python/jupyter-notebooks/simulated/multinomial/.ipynb_checkpoints/
+python/jupyter-notebooks/credit/multinomial/.ipynb_checkpoints/
+python/jupyter-notebooks/credit/binomial/.ipynb_checkpoints/
+python/jupyter-notebooks/simulated/binomial/.ipynb_checkpoints/
 
 #IDEA
 *.idea/
