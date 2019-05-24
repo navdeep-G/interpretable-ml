@@ -22,8 +22,8 @@ pip install -r jupyter-notebooks/requirements.txt
 	* **Python**
 		* **Jupyter Notebooks** 
 			* *Financial Services*
-  				* [UCI creditcard dataset (Binary Classification)](https://github.com/navdeep-G/interpretable-ml/tree/master/jupyter-notebooks/credit/binomial)
-  				* [UCI creditcard dataset (Multinomial Classification)](https://github.com/navdeep-G/interpretable-ml/tree/master/jupyter-notebooks/credit/multinomial)
+  				* [UCI creditcard dataset (Binary Classification)](https://github.com/navdeep-G/interpretable-ml/tree/master/py/jupyter-notebooks/credit/binomial)
+  				* [UCI creditcard dataset (Multinomial Classification)](https://github.com/navdeep-G/interpretable-ml/tree/master/py/jupyter-notebooks/credit/multinomial)
 			* *Simulated Data*
-  				* [Binary Classfication](https://github.com/navdeep-G/interpretable-ml/tree/master/jupyter-notebooks/simulated/binomial)
-  				* [Multinomial Classification](https://github.com/navdeep-G/interpretable-ml/tree/master/jupyter-notebooks/simulated/multinomial)
+  				* [Binary Classfication](https://github.com/navdeep-G/interpretable-ml/tree/master/py/jupyter-notebooks/simulated/binomial)
+  				* [Multinomial Classification](https://github.com/navdeep-G/interpretable-ml/tree/master/py/jupyter-notebooks/simulated/multinomial)
