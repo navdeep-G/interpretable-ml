@@ -17,7 +17,7 @@ pip install -r jupyter-notebooks/requirements.txt
 3. sudo apt-get install --reinstall build-essential
 ```
 ## Contents 
-* [**Overview of interpretable machine learning techniques**](https://github.com/navdeep-G/interpretable-ml/tree/master/interpretable_ml.pdf)
+* [**Overview of interpretable machine learning techniques (not a complete list ...)**](https://github.com/navdeep-G/interpretable-ml/tree/master/interpretable_ml.pdf)
 * **Interpretable Machine Learning Use Cases**
 	* **Python**
 		* **Jupyter Notebooks** 
