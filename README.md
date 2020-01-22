@@ -9,7 +9,7 @@
 cd interpretable-ml
 virtualenv -p python3.6 env
 source env/bin/activate
-pip install -r jupyter-notebooks/requirements.txt
+pip install -r python/jupyter-notebooks/requirements.txt
 
 ** Note: if using Ubuntu, you may have to manually install gcc. Try the following 
 1. sudo apt-get update
