@@ -1,6 +1,6 @@
 # Interpretable Machine Learning
 
-##### **A collection of code, notebooks, and resources in relation to interpretable machine learning.**
+##### **A collection of code, notebooks, and resources for training interpretable machine learning (ML) models, explaining ML models, and debugging ML models for accuracy, discrimination, and security.**
 
 ##### **Want to contribute your own examples/code/resources?** Just make a pull request.
 
@@ -18,7 +18,6 @@ pip install -r python/jupyter-notebooks/requirements.txt
 ```
 ## Contents 
 * [**Overview of interpretable machine learning techniques (not a complete list ...)**](https://github.com/navdeep-G/interpretable-ml/tree/master/interpretable_ml.pdf)
-* **Interpretable Machine Learning Use Cases**
 	* **Python**
 		* **Jupyter Notebooks** 
 			* *Financial Services*
