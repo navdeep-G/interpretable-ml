@@ -17,15 +17,15 @@ pip install -r python/jupyter-notebooks/requirements.txt
 3. sudo apt-get install --reinstall build-essential
 ```
 ## Contents 
-* [**Overview of interpretable machine learning techniques (not a complete list ...)**](https://github.com/navdeep-G/interpretable-ml/tree/master/interpretable_ml.pdf)
-	* **Python**
-		* **Jupyter Notebooks** 
-			* *Financial Services*
-  				* [UCI creditcard dataset (Binary Classification)](https://github.com/navdeep-G/interpretable-ml/tree/master/python/jupyter-notebooks/credit/binomial)
-  				* [UCI creditcard dataset (Multinomial Classification)](https://github.com/navdeep-G/interpretable-ml/tree/master/python/jupyter-notebooks/credit/multinomial)
-			* *Simulated Data*
-  				* [Binary Classfication](https://github.com/navdeep-G/interpretable-ml/tree/master/python/jupyter-notebooks/simulated/binomial)
-  				* [Multinomial Classification](https://github.com/navdeep-G/interpretable-ml/tree/master/python/jupyter-notebooks/simulated/multinomial)
+* [**Overview of Interpretable Machine Learning Techniques (incomplete list)**](https://github.com/navdeep-G/interpretable-ml/tree/master/interpretable_ml.pdf)
+* Python
+	- 	Jupyter Notebooks
+		- Financial Services Use Case
+  			- [UCI creditcard dataset (Binary Classification)](https://github.com/navdeep-G/interpretable-ml/tree/master/python/jupyter-notebooks/credit/binomial)
+			- [UCI creditcard dataset (Multinomial Classification)](https://github.com/navdeep-G/interpretable-ml/tree/master/python/jupyter-notebooks/credit/multinomial)
+		- Simulated Data for Testing Purposes
+			- [Binary Classfication](https://github.com/navdeep-G/interpretable-ml/tree/master/python/jupyter-notebooks/simulated/binomial)
+			- [Multinomial Classification](https://github.com/navdeep-G/interpretable-ml/tree/master/python/jupyter-notebooks/simulated/multinomial)
 
 ## Further reading:
 * [*Awesome Machine Learning Interpretability*](https://github.com/jphall663/awesome-machine-learning-interpretability)
