@@ -37,4 +37,4 @@ pip install -r python/jupyter-notebooks/requirements.txt
 * [*Real-World Strategies for Model Debugging*](https://medium.com/@jphall_22520/strategies-for-model-debugging-aa822f1097ce)
 * [*Warning Signs: Security and Privacy in an Age of Machine Learning*](https://fpf.org/wp-content/uploads/2019/09/FPF_WarningSigns_Report.pdf)
 * [*Why you should care about debugging machine learning models*](https://www.oreilly.com/radar/why-you-should-care-about-debugging-machine-learning-models/)
-* [*A Short Paper Comparing 5 ML Algorithms on the Basis of their Interpretability V/s Accurqcy*](https://arxiv.org/abs/2008.10753v1)
+* [*A Short Paper Comparing 5 ML Algorithms on the Basis of their Interpretability V/s Accuracy*](https://arxiv.org/abs/2008.10753v1)
