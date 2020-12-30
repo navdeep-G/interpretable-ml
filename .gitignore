@@ -1,5 +1,11 @@
 *.DS_Store
 
+#Output
+*.zip
+*.mv
+*.gv
+*.png
+
 #Python
 python/jupyter-notebooks/simulated/.ipynb_checkpoints/
 python/jupyter-notebooks/credit/.ipynb_checkpoints/
