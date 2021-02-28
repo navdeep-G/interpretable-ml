@@ -1,0 +1,77 @@
+% Copyright 2014 by Damien Thiriet
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+% http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% 
+% The Current Maintainer of this work is Damien Thiriet
+%
+% This work consists of the files beamerdarkthemesuserguide.tex,
+% beamerdarkthemesuserguide.pdf, beamercolorthemecormorant.sty,
+% beamercolorthemefrigatebird.sty, beamercolorthememagpie.sty,
+% dahut.jpg, img_5630.jpg, example.tex, frigatebirdexampletree.pdf,
+% frigatebirdexampledefault.pdf, frigatebirdexamplesidebar.pdf,
+% frigatebirdexampleinfolines.pdf, cormorantexampledefault.pdf,
+% cormorantexamplesidebar.pdf, cormorantexampleinfolines.pdf,
+% cormorantexampletree.pdf, magpieexampledefault.pdf,
+% magpieexamplesidebar.pdf, magpieexampleinfolines.pdf,
+% magpieexampletree.pdf, makeexamples.sh
+%
+% img_5630.jpg was taken byamien Thiriet in the nice Dolina Pięciu
+% Stawów near Zakopane, Poland. img_5630.jpg and dahut.jpg and
+% example.tex are licenced CC-BY version 4.0 or later.
+% You will find a copy of this licence in
+% http://creativecommons.org/licenses/by/4.0/legalcode
+%
+%
+% makeexamples.sh is based upon beamerthemesmakeexample.sh, a file that
+% could be found in beamer official doc in 2013 (scripts are nowadays
+% part of beamer Makefile)
+% 
+% beamercolorthemeseahorse.sty was used as a canvas 
+% when coding beamercolorthememagpie.sty first version.
+%
+% Package version 0.4.1, 2014-09-03
+
+\mode<presentation>
+
+\definecolor{noir}{rgb}{.09,.09,.09}
+\definecolor{blanc}{rgb}{.91,.91,.91}
+\definecolor{rouge}{rgb}{.91,.09,.09}
+\definecolor{vert}{rgb}{.09,.91,.09}
+\definecolor{bleu}{rgb}{.09,.09,.91}
+
+\setbeamercolor{background canvas}{bg=noir}
+\setbeamercolor{normal text}{fg=blanc}
+\setbeamercolor{structure}{fg=-bleu}
+\setbeamercolor{local structure}{fg=bleu}
+
+\setbeamercolor{block title}{fg=blanc,bg=vert!55!noir}
+\setbeamercolor{block body}{bg=noir!90!blanc}
+\setbeamercolor{block title alerted}{bg=rouge!55!noir,fg=blanc}
+\setbeamercolor{block body alerted}{bg=noir!90!blanc}
+\setbeamercolor{block title example}{bg=-rouge!45!blanc,fg=blanc}
+\setbeamercolor{block body example}{bg=noir!90!blanc}
+\setbeamercolor{item}{fg=vert}
+
+\setbeamercolor{titlelike}{fg=blanc,bg=vert!60!noir}
+
+\setbeamercolor{palette primary}{bg=noir,fg=blanc}
+\setbeamercolor{palette secondary}{bg=noir,fg=bleu!50!blanc}
+\setbeamercolor{palette tertiary}{bg=noir,fg=-vert}
+\setbeamercolor{palette quaternary}{use=item,bg=noir,fg=item.fg}
+
+\setbeamercolor{sidebar}{use=block body, bg=block body.bg}
+\setbeamercolor{palette sidebar primary}{use=titlelike, bg=titlelike.bg, fg=titlelike.fg}
+\setbeamercolor{section in sidebar}{use=titlelike, fg=titlelike.fg, bg=titlelike.bg}
+
+\setbeamercolor{logo}{use=block title, bg=block title.bg}
+\setbeamercolor{separation line}{fg=blanc,bg=blanc}
+
+\mode<all>

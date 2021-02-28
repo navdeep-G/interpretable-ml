@@ -1,0 +1,19 @@
+#!/bin/bash
+latex fair_mli.tex
+bibtex fair_mli
+latex fair_mli.tex
+latex fair_mli.tex
+pdflatex fair_mli.tex
+rm fair_mli.pdf
+pdflatex fair_mli.tex
+rm *.aux
+rm *.bbl
+rm *.blg
+rm *.dvi
+rm *.log
+rm *.nav
+rm *.out
+rm *.run.xml
+rm *.snm
+rm *.toc
+rm fair_mli-blx.bib

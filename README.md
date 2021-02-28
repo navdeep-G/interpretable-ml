@@ -17,15 +17,31 @@ pip install -r python/jupyter-notebooks/requirements.txt
 3. sudo apt-get install --reinstall build-essential
 ```
 ## Contents 
-* [**Overview of Interpretable Machine Learning Techniques (incomplete list)**](https://github.com/navdeep-G/interpretable-ml/tree/master/interpretable_ml.pdf)
+* Presentations
+	* [Overview of Interpretable Machine Learning Techniques (incomplete list)](https://github.com/navdeep-G/interpretable-ml/tree/master/iml_tex/interpretable_ml.pdf)
+	* [Discrimination in Machine Learning] (https://github.com/navdeep-G/interpretable-ml/tree/master/fair_mli_tex/fair_mli.pdf.pdf)
 * Python
 	- 	Jupyter Notebooks
-		- Financial Services Use Case
-  			- [UCI creditcard dataset (Binary Classification)](https://github.com/navdeep-G/interpretable-ml/tree/master/python/jupyter-notebooks/credit/binomial)
-			- [UCI creditcard dataset (Multinomial Classification)](https://github.com/navdeep-G/interpretable-ml/tree/master/python/jupyter-notebooks/credit/multinomial)
-		- Simulated Data for Testing Purposes
-			- [Binary Classfication](https://github.com/navdeep-G/interpretable-ml/tree/master/python/jupyter-notebooks/simulated/binomial)
-			- [Multinomial Classification](https://github.com/navdeep-G/interpretable-ml/tree/master/python/jupyter-notebooks/simulated/multinomial)
+		- Use Cases
+  			- Financial Services
+  				- [UCI creditcard dataset](https://archive.ics.uci.edu/ml/datasets/default+of+credit+card+clients) 
+  					- [Binary Classification](https://github.com/navdeep-G/interpretable-ml/tree/master/python/jupyter-notebooks/credit/binomial)
+  						- [Shapley, PDP, & ICE](https://github.com/navdeep-G/interpretable-ml/blob/master/python/jupyter-notebooks/credit/binomial/xgb_credit_binary_shap_pdp_ice.ipynb)
+  						- [Decision Tree Surrogate and Leave One Covariate Out](https://github.com/navdeep-G/interpretable-ml/blob/master/python/jupyter-notebooks/credit/binomial/dt_surrogate_loco.ipynb)
+  						- [LIME](https://github.com/navdeep-G/interpretable-ml/blob/master/python/jupyter-notebooks/credit/binomial/lime.ipynb)
+  						- [Residual Analysis](https://github.com/navdeep-G/interpretable-ml/blob/master/python/jupyter-notebooks/credit/binomial/debugging_resid_analysis_redux.ipynb)
+  						- [Sensitivity Analysis](https://github.com/navdeep-G/interpretable-ml/blob/master/python/jupyter-notebooks/credit/binomial/debugging_sens_analysis_redux.ipynb)
+  						- [Disparate Impact Analysis](https://github.com/navdeep-G/interpretable-ml/blob/master/python/jupyter-notebooks/credit/binomial/dia.ipynb)
+  						- [Disparate Impact Analysis w/ Python `datatable`](https://github.com/navdeep-G/interpretable-ml/blob/master/python/jupyter-notebooks/credit/binomial/dia_with_datatable.ipynb)
+					- [Multinomial Classification](https://github.com/navdeep-G/interpretable-ml/tree/master/python/jupyter-notebooks/credit/multinomial)
+						- [Shapley, PDP, & ICE](https://github.com/navdeep-G/interpretable-ml/blob/master/python/jupyter-notebooks/credit/multinomial/xgb_credit_multinomial_shap_pdp_ice.ipynb)
+						- [Disparate Impact Analysis](https://github.com/navdeep-G/interpretable-ml/blob/master/python/jupyter-notebooks/credit/multinomial/dia_multinomial.ipynb)
+			- Simulated Data for Testing Purposes
+				- [Binary Classfication](https://github.com/navdeep-G/interpretable-ml/tree/master/python/jupyter-notebooks/simulated/binomial)
+					- [Shapley, PDP, & ICE](https://github.com/navdeep-G/interpretable-ml/blob/master/python/jupyter-notebooks/simulated/binomial/xgb_simulated_binomial_shap_pdp_ice.ipynb)
+				- [Multinomial Classification]()
+					- [Shapley, PDP, & ICE](https://github.com/navdeep-G/interpretable-ml/blob/master/python/jupyter-notebooks/simulated/multinomial/xgb_simulated_multinomial_shap_pdp_ice.ipynb)
+					- [Shapley, PDP, ICE, & Decision Tree Surrogate](https://github.com/navdeep-G/interpretable-ml/blob/master/python/jupyter-notebooks/simulated/multinomial/xgb_simulated_multinomial_shap_pdp_ice_DT.ipynb)
 
 ## Further reading:
 * [*Awesome Machine Learning Interpretability*](https://github.com/jphall663/awesome-machine-learning-interpretability)
