@@ -19,7 +19,7 @@ pip install -r python/jupyter-notebooks/requirements.txt
 ## Contents 
 * Presentations
 	* [Overview of Interpretable Machine Learning Techniques (incomplete list)](https://github.com/navdeep-G/interpretable-ml/tree/master/iml_tex/interpretable_ml.pdf)
-	* [Discrimination in Machine Learning] (https://github.com/navdeep-G/interpretable-ml/tree/master/fair_mli_tex/fair_mli.pdf.pdf)
+	* [Discrimination in Machine Learning](https://github.com/navdeep-G/interpretable-ml/tree/master/fair_ml_tex/fair_mli.pdf)
 * Python
 	- 	Jupyter Notebooks
 		- Use Cases
@@ -53,4 +53,3 @@ pip install -r python/jupyter-notebooks/requirements.txt
 * [*Real-World Strategies for Model Debugging*](https://medium.com/@jphall_22520/strategies-for-model-debugging-aa822f1097ce)
 * [*Warning Signs: Security and Privacy in an Age of Machine Learning*](https://fpf.org/wp-content/uploads/2019/09/FPF_WarningSigns_Report.pdf)
 * [*Why you should care about debugging machine learning models*](https://www.oreilly.com/radar/why-you-should-care-about-debugging-machine-learning-models/)
-* [*Discrimination in Machine Learning*](https://github.com/navdeep-G/fair-ml)
