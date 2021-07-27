@@ -1,0 +1,433 @@
+\documentclass[11pt,
+			   %10pt, 
+               %hyperref={colorlinks},
+               aspectratio=169,
+               hyperref={colorlinks}
+               ]{beamer}
+\usetheme{Warsaw}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[american]{babel}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    urlcolor=[rgb]{1,0,1},
+    linkcolor=[rgb]{1,0,1}}
+
+\usepackage[natbib=true,style=numeric,backend=bibtex,useprefix=true]{biblatex}
+
+%\setbeamercolor*{bibliography entry title}{fg=black}
+%\setbeamercolor*{bibliography entry location}{fg=black}
+%\setbeamercolor*{bibliography entry note}{fg=black}
+\definecolor{OwlGreen}{RGB}{75,0,130} % easier to see
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+\setbeamerfont{caption}{size=\footnotesize}
+\setbeamertemplate{frametitle continuation}{}
+
+\setcounter{tocdepth}{1}
+\renewcommand*{\bibfont}{\scriptsize}
+\addbibresource{secure_ml_bibliography.bib}
+
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+
+\usenavigationsymbolstemplate{}
+\setbeamertemplate{footline}{%
+    \raisebox{5pt}{\makebox{\hfill\makebox[20pt]{\color{gray}
+          \scriptsize\insertframenumber}}}\hspace*{5pt}}
+
+\author{\hspace{1pt}Navdeep Gill}
+\title{Secure Machine Learning}
+\logo{\includegraphics[height=8pt]{img/h2o_logo.png}}
+\institute{\href{https://www.h2o.ai}{H\textsubscript{2}O.ai}}
+\date{\today}
+\subject{Security of Machine Learning Models}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{frame}
+	
+		\frametitle{Contents}
+		
+		\tableofcontents{}
+		
+	\end{frame}
+
+%-------------------------------------------------------------------------------
+	\section{Why?}
+%-------------------------------------------------------------------------------
+
+	\begin{frame}
+		
+		\frametitle{What are Reasons for Attacking Machine Learning Models?}
+A majority of the time, hackers, malicious insiders, and their criminal associates, seek to:
+			\begin{itemize}
+				\item Gain beneficial outcomes from a predictive or pattern recognition model or induce negative outcomes for others. %(loans, insurance policies, jobs, favorable criminal risk assessments, or others)
+				\item Infiltrate corporate entities.
+				\item Obtain access to intellectual property, e.g., models, data, etc.
+			\end{itemize}	
+		\end{frame}
+
+%-------------------------------------------------------------------------------
+	\section{Attacks}
+%-------------------------------------------------------------------------------
+
+%-------------------------------------------------------------------------------
+		\subsection{Data Poisoning}
+%-------------------------------------------------------------------------------
+
+			\begin{frame}
+		
+				\frametitle{Data Poisoning Attacks: \textbf{What?}}
+				
+				\begin{itemize}
+					\item Hackers obtain access (usually unautorized) to data (training, validation, or test) and alter it before model training, evaluation, or retraining.
+					\item Malicious or extorted data science or IT insiders do the same while working at a ...
+					\begin{itemize}
+						\item small company where the same person is allowed access to many aspects of the data science pipeline, e.g., training data, model training, and model deployment. Note, this type of access
+						is usually enough for a single person to orchestrate malicious attacks and/or obtain sensitive information.
+						\item massive company, and secretly gather the permissions needed to obtain and manipulate training data (ETL processes), train models, and deploy models. It should be noted
+						that this type of covert activity can be orchestrated amongst many malicious actors.
+					\end{itemize}
+				\end{itemize}
+			
+			\end{frame}
+			
+			\begin{frame}
+		
+				\frametitle{Data Poisoning Attacks: \textbf{How?}}		
+			
+				\begin{figure}[htb]
+					\begin{center}
+						\includegraphics[height=150pt]{img/poison.png}
+					\end{center}
+				\end{figure}	
+		
+			\end{frame}
+		
+			\begin{frame}[label={slide:data_poisoning_defense}]
+		
+				\frametitle{Data Poisoning Attacks: \textbf{Defenses}}
+				
+				\begin{itemize}
+					\item \textbf{Disparate impact analysis}: Look for discrimination in your model’s predictions. 
+					\item \textbf{Fair or private models}: Examples include, but are not limited to, learning fair representations (LFR), private aggregation of teacher ensembles (PATE) \cite{pate}, \cite{lfr}. These models try to focus less on individual demographic traits to make predictions and may also be less susceptible to discriminatory data poisoning attacks.
+					\item \textbf{Reject on negative impact (RONI) analysis}: RONI is a technique that removes rows of data from the training data set that decrease prediction accuracy.  See: \textit{\citefield{security_of_ml}{title}} \cite{security_of_ml}. 		
+					\item \textbf{Residual analysis}: Specifically, look for large positive deviance residuals. Additionally, look for anomalous behavior in negative deviance residuals.
+					\item \textbf{Self-reflection}: Score your models on your employees, consultants, and contractors and look for anomalously beneficial predictions.
+				\end{itemize}	
+			\end{frame}
+		
+%-------------------------------------------------------------------------------
+		\subsection{Backdoors and Watermarks}
+%-------------------------------------------------------------------------------
+			
+			\begin{frame}
+		
+				\frametitle{Backdoors and Watermarks: \textbf{What?}}
+				\begin{itemize}
+				\item Hackers infiltrate your production scoring system OR ... 
+				\item People in your organization (malicious or extorted data science or IT insiders) change your production scoring code pre/during deployment by adding a backdoor that can be exploited using water-marked data, which is a unique set of information that causes a desired response from the hacked scoring system.
+				\end{itemize}
+				\vspace{20pt}
+			\end{frame}
+		
+			\begin{frame}
+		
+				\frametitle{Backdoors and Watermarks: \textbf{How?}}		
+			
+				\begin{figure}[htb]
+					\begin{center}
+						\includegraphics[height=150pt]{img/watermark.PNG}
+					\end{center}
+				\end{figure}	
+
+			\end{frame}
+		
+			\begin{frame}[label={slide:watermark_defense}]
+		
+				\frametitle{Backdoors and Watermarks: \textbf{Defenses}}
+				\begin{itemize}
+				\item \textbf{Anomaly detection}: Screen your production scoring queue with an anomaly detection algorithm that you understand and trust. For example, an autoencoder, which is a type of machine learning (ML) model that can detect anomalous data. 
+				\item \textbf{Data integrity constraints}: Don’t allow impossible or unrealistic combinations of data into your production scoring queue, i.e., sanity check combinations of data.
+				\item \textbf{Disparate impact analysis}: See Slide \ref{slide:data_poisoning_defense}.
+				\item \textbf{Version control}: Keep track of your production model scoring code just like any other enterprise software through a version control tool, e.g., Git.
+				\end{itemize}
+				
+			\end{frame}
+
+
+%-------------------------------------------------------------------------------
+		\subsection{Model Inversion}
+%-------------------------------------------------------------------------------
+			
+			\begin{frame}
+		
+				\frametitle{Surrogate Model Inversion Attacks: \textbf{What?}}
+				
+Due to a lack of security or a distributed attack on your model API, hackers can simulate data, submit it, receive predictions, and train a surrogate model between their simulated data and your model predictions. This surrogate can ...
+				\vspace{10pt}
+				\begin{itemize}
+				\item expose your proprietary business logic, which can be known as ``model stealing'' \cite{model_stealing}. 
+				\item reveal sensitive information based on your training data.
+				\item be the first stage of a membership inference attack (see Slide \ref{slide:membership}).
+				\item be a test-bed for adversarial example attacks (see Slide \ref{slide:adversary}). 
+				\end{itemize}
+
+			\end{frame}
+		
+			\begin{frame}[label={slide:inversion}]
+		
+				\frametitle{Surrogate Model Inversion Attacks: \textbf{How?}}	
+			
+				\begin{figure}[htb]
+					\begin{center}
+						\includegraphics[height=150pt]{img/inversion.PNG}
+					\end{center}
+				\end{figure}	
+
+			\end{frame}
+		
+			\begin{frame}[label={slide:inversion_defense}]
+		
+				\frametitle{Surrogate Model Inversion Attacks: \textbf{Defenses}}
+				\begin{itemize}
+					\item \textbf{Authentication}: Authenticate consumers of your model’s API or other relevant endpoints. This is probably one of the most effective defenses for this type of attack as it can stop hackers before they can even start.
+					\item \textbf{Defensive watermarks}: Add subtle information to your model’s predictions to aid in forensic analysis if your model is hacked or stolen. This is similar to a physical watermark you would see in the real world, e.g., a watermark you would see on a US currency, which can help catch fake vs. real currency.
+					\item \textbf{Throttling}: Consider slowing down your prediction response times, especially after anomalous behavior is detected. This will give you and your team time to evaluate any potential wrongdoing and take the necessary steps toward remediation.
+					\item \textbf{White-hat surrogate models}: Train your own surrogate models as a white-hat hacking exercise to see what an attacker could learn about your public models. This will give you the opportunity to build protections against this type of attack.
+				\end{itemize}
+				
+			\end{frame}
+		
+
+%-------------------------------------------------------------------------------
+		\subsection{Membership Inference}
+%-------------------------------------------------------------------------------
+
+			\begin{frame}
+		
+				\frametitle{Membership Inference Attacks: \textbf{What?}}		
+				\small Due to a lack of security or a distributed attack on your model API or other model endpoint ... 
+			
+				\begin{itemize}
+					\item this two-stage attack begins with a surrogate model inversion attack (see Slide: \ref{slide:inversion}).
+					\item A second-level surrogate is then trained to discriminate between rows of data in, and not in, the first-level surrogate's training data.
+					\item The second-level surrogate can dependably reveal whether a row of data was in, or not in, your original training data \cite{membership_inference}.
+				\end{itemize}
+				
+Simply knowing if a person was in, or not in, a training dataset can be a violation of individual or group privacy. However, when executed to the fullest extent, a membership inference attack can allow a bad actor to \textbf{rebuild your sensitive training data}!\normalsize	
+
+			\end{frame}
+	
+			\begin{frame}[label={slide:membership}]
+		
+				\frametitle{Membership Inference Attacks: \textbf{How?}}		
+			
+				\begin{figure}[htb]
+					\begin{center}
+						\includegraphics[height=150pt]{img/membership.PNG}
+					\end{center}
+				\end{figure}	
+
+			\end{frame}
+			
+			\begin{frame}
+		
+				\frametitle{Membership Inference Attacks: \textbf{Defenses}}		
+			
+				\begin{itemize}
+					\item See Slide \ref{slide:inversion_defense}.
+				\item \textbf{Monitor for training data}: Monitor your production scoring queue for data that closely resembles any individual used to train your model. Real-time scoring of rows that are extremely similar or identical to data used in training, validation, or testing should be recorded and investigated.
+				\end{itemize}
+
+			\end{frame}
+	
+%-------------------------------------------------------------------------------
+		\subsection{Adversarial Examples}
+%-------------------------------------------------------------------------------
+	
+			\begin{frame}
+		
+				\frametitle{Adversarial Example Attacks: \textbf{What?}}		
+
+Due to a lack of security or a distributed attack on your model API or other model endpoint, hackers simulate data, submit it, receive predictions, and learn by systematic trial-and-error ... 		
+				\begin{itemize}
+					\item your proprietary business logic.
+					\item how to game your model to dependably receive a desired outcome. 
+				\end{itemize}
+				\vspace{10pt}
+Adversarial example attacks can also be enhanced, tested, and hardened using models trained from surrogate model inversion attacks (see Slide \ref{slide:inversion}).
+
+			\end{frame}	
+	
+			\begin{frame}[label={slide:adversary}]
+		
+				\frametitle{Adversarial Example Attacks: \textbf{How?}}		
+			
+				\begin{figure}[htb]
+					\begin{center}
+						\includegraphics[height=150pt]{img/adversary.PNG}
+					\end{center}
+				\end{figure}	
+
+			\end{frame}	
+			
+			\begin{frame}
+		
+				\frametitle{Adversarial Example Attacks: \textbf{Defenses}}		
+				\small
+				\begin{itemize}
+					\item \textbf{Anomaly detection}: See Slide \ref{slide:watermark_defense}. 
+					\item \textbf{Authentication}: See Slide \ref{slide:inversion_defense}. 
+					\item \textbf{Benchmark models}: Always compare complex model predictions to trusted linear model predictions. If the two model’s predictions diverge beyond some acceptable threshold, review the prediction before you issue it.
+					\item \textbf{Fair or private models}: See Slide \ref{slide:data_poisoning_defense}.
+					\item \textbf{Throttling}: See Slide \ref{slide:inversion_defense}. 
+					\item \textbf{Model monitoring}: Watch your model in real-time for strange prediction behavior.
+					\item \textbf{White-hat sensitivity analysis}: Try to trick your own model by seeing its outcome on many different combinations of input data values.
+					\item \textbf{White-hat surrogate models}: See Slide \ref{slide:inversion_defense}. 
+				\end{itemize}
+				\normalsize
+			\end{frame}
+
+%-------------------------------------------------------------------------------
+		\subsection{Impersonation}
+%-------------------------------------------------------------------------------
+
+			\begin{frame}
+		
+				\frametitle{Impersonation Attacks: \textbf{What?}}		
+Bad actors learn ... 
+				\begin{itemize}
+					\item by inversion or adversarial example attacks (see Slides \ref{slide:inversion}, \ref{slide:adversary}), the attributes favored by your model and then impersonate them.
+					\item by disparate impact analysis (see Slide \ref{slide:data_poisoning_defense}), that your model is discriminatory (e.g. \href{https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing}{Propublica and COMPAS}, \href{https://medium.com/@Joy.Buolamwini/response-racial-and-gender-bias-in-amazon-rekognition-commercial-ai-system-for-analyzing-faces-a289222eeced}{Gendershades and Rekognition}), and impersonate your model's privileged class to receive a favorable outcome.\footnote{This presentation makes no claim on the quality of the analysis in Angwin et al. (2016), which has been criticized, but is simply stating that such cracking is possible \cite{angwin16,}, \cite{flores2016false}.}
+				\end{itemize}
+				
+			\end{frame}
+
+			\begin{frame}
+		
+				\frametitle{Impersonation Attacks: \textbf{How?}}		
+			
+				\begin{figure}[htb]
+					\begin{center}
+						\includegraphics[height=150pt]{img/imperson.PNG}
+					\end{center}
+				\end{figure}	
+				
+			\end{frame}
+			
+			\begin{frame}
+		
+				\frametitle{Impersonation Attacks: \textbf{Defenses}}		
+			
+				\begin{itemize}
+					\item \textbf{Authentication}: See Slide \ref{slide:inversion_defense}. 
+					\item \textbf{Disparate impact analysis}: See Slide \ref{slide:data_poisoning_defense}.
+					\item \textbf{Model monitoring}: Watch for too many similar predictions in real-time. Watch for too many similar input rows in real-time.
+				\end{itemize}
+				
+			\end{frame}
+
+%-------------------------------------------------------------------------------
+	\section{General Concerns}
+%-------------------------------------------------------------------------------
+
+			\begin{frame}[t, allowframebreaks]	
+		
+				\frametitle{General concerns}	
+				\footnotesize
+				\begin{itemize}
+					\item \textbf{Black-box models}: Over time a motivated, malicious actor could learn more about your own black-box model than you know and use this knowledge imbalance to attack your model \cite{papernot2018marauder}.
+					\item \textbf{Black-hat eXplainable AI (XAI)}:  While XAI can enable human learning from machine learning, regulatory compliance, and appeal of automated decisions, it can also make ML hacks easier and more damaging \cite{shokri2019privacy}.
+					\item \textbf{Distributed-denial-of-service (DDOS) attacks}: Like any other public-facing service, your model could be attacked with a DDOS attack.  
+					\item \textbf{Distributed systems and models}: Data and code spread over many machines provides a larger, more complex attack surface for a malicious actor.
+					\item \textbf{Package dependencies}: Any package your modeling pipeline is dependent on could potentially be hacked to conceal an attack payload.
+				\end{itemize}
+				\normalsize
+
+			\end{frame}
+
+%-------------------------------------------------------------------------------
+	\section{General Solutions}
+%-------------------------------------------------------------------------------
+	
+%-------------------------------------------------------------------------------
+		\subsection{General Solutions}
+%-------------------------------------------------------------------------------
+	
+			\begin{frame}[t, allowframebreaks]	
+		
+				\frametitle{General Solutions}	
+				\footnotesize
+				\begin{itemize}
+					\item \textbf{Authenticated access and prediction throttling}: for prediction APIs and other model endpoints.
+					\item \textbf{Benchmark models}: Compare complex model predictions to less complex (and hopefully less hackable) model predictions. For traditional, low signal-to-noise data mining problems, predictions should not be too different. If they are, investigate them.
+					\item \textbf{Encrypted, differentially private, or federated training data}: Properly implemented, these technologies can thwart many types of attacks. Improperly implemented, they simply create a broader attack surface or hinder forensic efforts.
+					\item \textbf{Interpretable, fair, or private models}: In addition to models like LFR and PATE, also checkout \href{https://github.com/h2oai/h2o-3/blob/master/h2o-py/demos/H2O_tutorial_gbm_monotonicity.ipynb}{monotonic GBMs}, \href{https://christophm.github.io/interpretable-ml-book/rulefit.html}{Rulefit}, \href{https://github.com/IBM/AIF360}{AIF360}, and the \href{https://users.cs.duke.edu/~cynthia/code.html}{Rudin group} at Duke.
+					\framebreak
+					\item \textbf{Model documentation, management, and monitoring}: 
+						\begin{itemize}
+							\item Take an inventory of your predictive models. 
+							\item Document production models well-enough that a new employee can diagnose whether their current behavior is notably different from their intended behavior. 
+							\item Know who trained what model, on what data, and when.
+							\item Monitor and investigate the inputs and predictions of deployed models on live data.	
+						\end{itemize}
+					\item \textbf{Model debugging and testing, and white-hat hacking}: Test your models for accuracy, fairness, and privacy before deploying them. Train white-hat surrogate models and apply XAI techniques to them to see what hackers can see. 
+					\item \textbf{System monitoring and profiling}: Use a meta anomaly detection system on your entire production modeling system’s operating statistics — e.g. number of predictions in some time period, latency, CPU, memory and disk loads, number of concurrent users, etc. — then closely monitor for anomalies.
+				\end{itemize}
+				\normalsize
+
+			\end{frame}
+
+%-------------------------------------------------------------------------------
+	\section{Summary}
+%-------------------------------------------------------------------------------
+
+		\begin{frame}
+		
+			\frametitle{Summary}		
+			
+			\begin{itemize}
+				\item ML hacking is still probably rare and exotic, but new XAI techniques can make nearly all ML attacks easier and more damaging.
+				\item Beware of insider threats, especially organized extortion of insiders. 
+				\item Open, public prediction APIs are a privacy and security nightmare. 
+				\item Your competitors could be gaming or stealing your public predictive models. Do your end user license agreements (EULA) or terms of service (TOS) explicitly prohibit this?
+				\item Best practices around IT security, model management, and model monitoring are good defenses.
+			\end{itemize}
+		
+		\end{frame}
+
+
+%-------------------------------------------------------------------------------
+%	References
+%-------------------------------------------------------------------------------
+
+	\begin{frame}[t, allowframebreaks]
+	
+		\frametitle{References}	
+		
+			\textit{Proposals for Model Vulnerability and Security}:\\
+			\footnotesize{\url{https://www.oreilly.com/ideas/proposals-for-model-vulnerability-and-security}}\normalsize
+			
+			\vspace{10pt}
+			
+			\textit{Can Your Machine Learning Model Be Hacked?!}:\\
+			\footnotesize{\url{https://www.h2o.ai/blog/can-your-machine-learning-model-be-hacked/}}
+			
+			\vspace{10pt}
+			
+			\textit{Responsible Machine Learning (Section: Secure Machine Learning (Page 50)}:\\
+			\footnotesize{\url{http://info.h2o.ai/rs/644-PKX-778/images/OReilly_Responsible_ML_eBook.pdf}}
+			
+		
+		\framebreak		
+		
+		\printbibliography
+		
+	\end{frame}
+
+\end{document}

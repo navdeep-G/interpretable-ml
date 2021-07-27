@@ -20,6 +20,7 @@ pip install -r python/jupyter-notebooks/requirements.txt
 * Presentations
 	* [Overview of Interpretable Machine Learning Techniques (incomplete list)](https://github.com/navdeep-G/interpretable-ml/tree/master/iml_tex/interpretable_ml.pdf)
 	* [Discrimination in Machine Learning](https://github.com/navdeep-G/interpretable-ml/tree/master/fair_ml_tex/fair_mli.pdf)
+	* [Secure Machine Learning](https://github.com/navdeep-G/interpretable-ml/tree/master/secure_ml_tex/secure_ml.pdf)
 * Python
 	- 	Jupyter Notebooks
 		- Use Cases

@@ -1,0 +1,19 @@
+#!/bin/bash
+latex secure_ml.tex
+bibtex secure_ml
+latex secure_ml.tex
+latex secure_ml.tex
+pdflatex secure_ml.tex
+rm secure_ml.pdf
+pdflatex secure_ml.tex
+rm *.aux
+rm *.bbl
+rm *.blg
+rm *.dvi
+rm *.log
+rm *.nav
+rm *.out
+rm *.run.xml
+rm *.snm
+rm *.toc
+rm secure_ml-blx.bib
