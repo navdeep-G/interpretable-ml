@@ -1,0 +1,19 @@
+!/bin/bash
+latex rml.tex
+bibtex rml
+latex rml.tex
+latex rml.tex
+pdflatex rml.tex
+rm rml.pdf
+pdflatex rml.tex
+rm *.aux
+rm *.bbl
+rm *.blg
+rm *.dvi
+rm *.log
+rm *.nav
+rm *.out
+rm *.run.xml
+rm *.snm
+rm *.toc
+rm rml-blx.bib
